@@ -1,0 +1,26 @@
+<?php
+$translate = $this->plugin('translate');
+$this->htmlElement('body')->appendAttribute('class', 'items search');
+?>
+
+<section class="subpage-hero">
+    <div class="container">
+        <div class="kicker"><?php echo $translate('The Archive'); ?></div>
+        <h1><?php echo $translate('Advanced Search'); ?></h1>
+        <p><?php echo $translate('Search interviews by keyword, property, item set, and more.'); ?></p>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container" style="max-width: 900px;">
+        <form id="advanced-search" method="get" action="<?php echo $this->escapeHtml($this->url(null, ['action' => 'browse'], true)); ?>">
+            <?php echo $this->partial(
+                'common/advanced-search',
+                ['query' => $this->params()->fromQuery(), 'resourceType' => 'item']
+            ); ?>
+            <div id="page-actions">
+                <input type="submit" name="submit" value="<?php echo $this->escapeHtml($translate('Search')); ?>">
+            </div>
+        </form>
+    </div>
+</section>

@@ -1,0 +1,22 @@
+<?php
+// Media show page
+$translate = $this->plugin('translate');
+$escape = $this->plugin('escapeHtml');
+$title = $media->displayTitle();
+?>
+
+<section class="subpage-hero">
+    <div class="container">
+        <h1><?php echo $escape($title); ?></h1>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <?php echo $media->render(); ?>
+
+        <div style="margin-top: 32px;">
+            <?php echo $this->resourcePageBlocks($media); ?>
+        </div>
+    </div>
+</section>

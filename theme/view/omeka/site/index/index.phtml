@@ -1,0 +1,100 @@
+<?php
+/**
+ * Home page — fallback when no pages are configured.
+ * In practice, Omeka S serves the homepage via page/show.phtml
+ * using the homepage page template. This is the fallback.
+ */
+$translate = $this->plugin('translate');
+$escape = $this->plugin('escapeHtml');
+$thumbnail = $this->plugin('thumbnail');
+
+// Fetch recent items
+$api = $this->api();
+$recentItems = $api->search('items', ['sort_by' => 'created', 'sort_order' => 'desc', 'limit' => 4, 'site_id' => $site->id()])->getContent();
+$itemSets = $api->search('item_sets', ['site_id' => $site->id(), 'limit' => 6])->getContent();
+?>
+
+<!-- Hero -->
+<section class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <div class="kicker"><?php echo $translate('An Arlington Oral History Project'); ?></div>
+            <h1><?php echo $translate('The voices of a town, recorded'); ?></h1>
+            <p class="body-large"><?php echo $translate('More than eighty Arlington residents have shared their memories of the town they call home. Listen to their stories, explore the neighborhoods, and discover a living history of Arlington, Massachusetts.'); ?></p>
+            <div class="hero-buttons">
+                <a href="<?php echo $this->url('site/resource', ['controller' => 'item', 'action' => 'browse'], true); ?>" class="btn btn-primary"><?php echo $translate('Browse interviews'); ?></a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <div style="width: 100%; height: 100%; background: var(--paper-alt-rule); display: flex; align-items: center; justify-content: center; color: var(--paper-alt-ink-soft); font-family: var(--font-mono); font-size: 13px;">
+                <?php echo $translate('Hero photograph'); ?>
+            </div>
+        </div>
+    </div>
+</section>
+
+<?php if (count($recentItems) > 0): ?>
+<!-- Recently Added -->
+<section class="section" style="background: var(--accent-soft);">
+    <div class="container">
+        <div class="section-header">
+            <div class="kicker"><?php echo $translate('Recently Added'); ?></div>
+            <h2><?php echo $translate('New to the archive'); ?></h2>
+        </div>
+        <div class="grid-4">
+            <?php foreach ($recentItems as $item): ?>
+            <a href="<?php echo $escape($item->siteUrl($site->slug())); ?>" class="card">
+                <?php if ($item->thumbnail()):?>
+                <div class="card-thumb">
+                    <?php echo $thumbnail($item, 'medium'); ?>
+                </div>
+                <?php endif; ?>
+                <div class="card-body">
+                    <?php
+                    $sets = $item->itemSets();
+                    if (count($sets)):
+                        $firstSet = current($sets);
+                    ?>
+                    <div class="kicker"><?php echo $escape($firstSet->displayTitle()); ?></div>
+                    <?php endif; ?>
+                    <h3><?php echo $escape($item->displayTitle()); ?></h3>
+                    <?php $desc = $item->value('dcterms:description'); ?>
+                    <?php if ($desc): ?>
+                    <p><?php echo $escape(mb_substr($desc, 0, 120) . (mb_strlen($desc) > 120 ? '…' : '')); ?></p>
+                    <?php endif; ?>
+                </div>
+            </a>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</section>
+<?php endif; ?>
+
+<?php if (count($itemSets) > 0): ?>
+<!-- Collections -->
+<section class="section">
+    <div class="container">
+        <div class="section-header">
+            <div class="kicker"><?php echo $translate('Collections'); ?></div>
+            <h2><?php echo $translate('Explore by theme'); ?></h2>
+        </div>
+        <div class="grid-3">
+            <?php foreach ($itemSets as $itemSet): ?>
+            <a href="<?php echo $escape($itemSet->siteUrl($site->slug())); ?>" class="card card-item-set">
+                <div class="card-body">
+                    <?php $date = $itemSet->value('dcterms:date'); ?>
+                    <?php if ($date): ?>
+                    <div class="meta"><?php echo $escape($date); ?></div>
+                    <?php endif; ?>
+                    <h3><?php echo $escape($itemSet->displayTitle()); ?></h3>
+                    <?php $desc = $itemSet->value('dcterms:description'); ?>
+                    <?php if ($desc): ?>
+                    <p><?php echo $escape($desc); ?></p>
+                    <?php endif; ?>
+                </div>
+            </a>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</section>
+<?php endif; ?>

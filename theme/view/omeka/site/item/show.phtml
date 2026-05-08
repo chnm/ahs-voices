@@ -1,0 +1,155 @@
+<?php
+$translate = $this->plugin('translate');
+$escape = $this->plugin('escapeHtml');
+$thumbnail = $this->plugin('thumbnail');
+$this->headLink()->appendStylesheet($this->assetUrl('css/resource-page-blocks.css', 'Omeka'));
+$this->htmlElement('body')->appendAttribute('class', 'item resource show');
+
+$filterLocale = (bool) $this->siteSetting('filter_locale_values');
+$lang = $this->lang();
+$valueLang = $filterLocale ? [$lang, ''] : null;
+$title = $item->displayTitle(null, $valueLang);
+
+$this->headScript()->appendFile($this->assetUrl('js/transcript-player.js'));
+?>
+
+<!-- Breadcrumb -->
+<nav class="breadcrumb" aria-label="<?php echo $translate('Breadcrumb'); ?>">
+    <div class="container">
+        <a href="<?php echo $site->url(); ?>"><?php echo $translate('Home'); ?></a>
+        <span class="separator" aria-hidden="true">&rsaquo;</span>
+        <a href="<?php echo $this->url('site/resource', ['controller' => 'item', 'action' => 'browse'], true); ?>"><?php echo $translate('Browse'); ?></a>
+        <span class="separator" aria-hidden="true">&rsaquo;</span>
+        <?php
+        $sets = $item->itemSets();
+        if (count($sets)):
+            $firstSet = current($sets);
+        ?>
+        <a href="<?php echo $escape($firstSet->siteUrl($site->slug())); ?>"><?php echo $escape($firstSet->displayTitle()); ?></a>
+        <span class="separator" aria-hidden="true">&rsaquo;</span>
+        <?php endif; ?>
+        <span class="current"><?php echo $escape($title); ?></span>
+    </div>
+</nav>
+
+<!-- Interview Hero -->
+<section class="section" style="padding-bottom: 0;">
+    <div class="container">
+        <div class="interview-hero">
+            <?php if ($item->thumbnail()): ?>
+                <?php echo $thumbnail($item, 'large', ['class' => 'interview-portrait', 'alt' => $escape($title)]); ?>
+            <?php endif; ?>
+            <div>
+                <h1><?php echo $escape($title); ?></h1>
+                <?php
+                $sets = $item->itemSets();
+                if (count($sets)):
+                    $firstSet = current($sets);
+                ?>
+                <div class="kicker" style="margin-bottom: 8px;"><?php echo $escape($firstSet->displayTitle()); ?></div>
+                <?php endif; ?>
+                <div class="meta">
+                    <?php
+                    $parts = [];
+                    $date = $item->value('dcterms:date', ['lang' => $valueLang]);
+                    if ($date) $parts[] = $escape($date);
+                    $created = $item->value('dcterms:created', ['lang' => $valueLang]);
+                    if ($created) $parts[] = 'Recorded ' . $escape($created);
+                    $extent = $item->value('dcterms:extent', ['lang' => $valueLang]);
+                    if ($extent) $parts[] = $escape($extent);
+                    $spatial = $item->value('dcterms:spatial', ['lang' => $valueLang]);
+                    if ($spatial) $parts[] = $escape($spatial);
+                    echo implode(' · ', $parts);
+                    ?>
+                </div>
+                <?php $desc = $item->value('dcterms:description', ['lang' => $valueLang]); ?>
+                <?php if ($desc): ?>
+                <p class="body-large" style="margin-top: 12px;"><?php echo $escape($desc); ?></p>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Two-column layout -->
+<section class="section">
+    <div class="container">
+        <div class="interview-layout">
+            <!-- Left: Media + Transcript -->
+            <div>
+                <?php $this->trigger('view.show.before'); ?>
+
+                <!-- Omeka resource page blocks (media embeds, values, etc.) -->
+                <?php echo $this->resourcePageBlocks($item)->getBlocks(); ?>
+
+                <?php $this->trigger('view.show.after'); ?>
+            </div>
+
+            <!-- Right: Sidebar -->
+            <aside class="interview-sidebar">
+                <!-- Topics -->
+                <?php
+                $subjects = $item->value('dcterms:subject', ['all' => true, 'lang' => $valueLang]);
+                if ($subjects && count($subjects)):
+                ?>
+                <section>
+                    <h4><?php echo $translate('Topics'); ?></h4>
+                    <div class="tag-list">
+                        <?php foreach ($subjects as $subject): ?>
+                        <span class="tag"><?php echo $escape($subject); ?></span>
+                        <?php endforeach; ?>
+                    </div>
+                </section>
+                <?php endif; ?>
+
+                <!-- Contributor / Interviewer -->
+                <?php $contributor = $item->value('dcterms:contributor', ['lang' => $valueLang]); ?>
+                <?php if ($contributor): ?>
+                <section>
+                    <h4><?php echo $translate('Interviewer'); ?></h4>
+                    <p style="font-size: 14px;"><?php echo $escape($contributor); ?></p>
+                </section>
+                <?php endif; ?>
+
+                <!-- Item Sets -->
+                <?php
+                $itemSets = $item->itemSets();
+                if (count($itemSets)):
+                ?>
+                <section>
+                    <h4><?php echo $translate('Collection'); ?></h4>
+                    <?php foreach ($itemSets as $is): ?>
+                    <a href="<?php echo $escape($is->siteUrl($site->slug())); ?>" style="display: block; font-size: 14px; margin-bottom: 4px;"><?php echo $escape($is->displayTitle()); ?></a>
+                    <?php endforeach; ?>
+                </section>
+                <?php endif; ?>
+
+                <!-- Citation Generator -->
+                <?php
+                // Build citation metadata for JS
+                $citeName = $item->displayTitle(null, $valueLang);
+                $citeContributor = $item->value('dcterms:contributor', ['lang' => $valueLang]);
+                $citeDate = $item->value('dcterms:created', ['lang' => $valueLang]);
+                $citeUrl = $item->siteUrl($site->slug(), true);
+                $citeMeta = json_encode([
+                    'name' => $citeName,
+                    'interviewer' => $citeContributor ? str_replace('Interviewed by ', '', (string) $citeContributor) : '',
+                    'date' => (string) $citeDate,
+                    'url' => $citeUrl,
+                    'project' => 'Arlington Historical Society Oral History Project',
+                ]);
+                ?>
+                <section id="citation-generator" data-citation="<?php echo $escape($citeMeta); ?>">
+                    <h4><?php echo $translate('Cite This Interview'); ?></h4>
+                    <div class="citation-tabs" role="tablist">
+                        <button class="citation-tab active" role="tab" data-format="chicago"><?php echo $translate('Chicago'); ?></button>
+                        <button class="citation-tab" role="tab" data-format="mla"><?php echo $translate('MLA'); ?></button>
+                        <button class="citation-tab" role="tab" data-format="apa"><?php echo $translate('APA'); ?></button>
+                    </div>
+                    <div class="citation-text" id="citation-text"></div>
+                    <button class="btn btn-primary" id="copy-citation" style="font-size: 13px; padding: 8px 16px;"><?php echo $translate('Copy to clipboard'); ?></button>
+                </section>
+            </aside>
+        </div>
+    </div>
+</section>

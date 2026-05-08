@@ -1,0 +1,103 @@
+<?php
+$translate = $this->plugin('translate');
+$escape = $this->plugin('escapeHtml');
+$thumbnail = $this->plugin('thumbnail');
+$this->htmlElement('body')->appendAttribute('class', 'item resource browse');
+
+$filterLocale = (bool) $this->siteSetting('filter_locale_values');
+$lang = $this->lang();
+$valueLang = $filterLocale ? [$lang, ''] : null;
+
+$query = $this->params()->fromQuery();
+$itemSetShow = isset($itemSet);
+if ($itemSetShow):
+    $this->headLink()->appendStylesheet($this->assetUrl('css/resource-page-blocks.css', 'Omeka'));
+    $this->htmlElement('body')->appendAttribute('class', 'item-set');
+    $query['item_set_id'] = $itemSet->id();
+endif;
+?>
+
+<?php if ($itemSetShow): ?>
+<!-- Item Set context -->
+<section class="subpage-hero">
+    <div class="container">
+        <div class="kicker"><?php echo $translate('Collection'); ?></div>
+        <h1><?php echo $escape($itemSet->displayTitle(null, $valueLang)); ?></h1>
+        <?php $desc = $itemSet->displayDescription(null, $valueLang); ?>
+        <?php if ($desc): ?>
+        <p><?php echo $escape($desc); ?></p>
+        <?php endif; ?>
+    </div>
+</section>
+<?php else: ?>
+<!-- Browse all -->
+<section class="subpage-hero">
+    <div class="container">
+        <div class="kicker"><?php echo $translate('The Archive'); ?></div>
+        <h1><?php echo $translate('Browse Interviews'); ?></h1>
+        <p><?php echo $translate('Explore more than eighty recorded conversations with Arlington residents, spanning a century of town life.'); ?></p>
+    </div>
+</section>
+<?php endif; ?>
+
+<section class="section">
+    <div class="container">
+        <?php echo $this->searchFilters(); ?>
+
+        <div class="browse-controls">
+            <?php echo $this->pagination(); ?>
+            <div style="display: flex; gap: 8px; align-items: center;">
+                <?php echo $this->hyperlink($translate('Advanced search'), $this->url('site/resource', ['controller' => 'item', 'action' => 'search'], ['query' => $query], true), ['class' => 'advanced-search']); ?>
+                <?php echo $this->browse()->renderSortSelector('items'); ?>
+            </div>
+        </div>
+
+        <?php $this->trigger('view.browse.before'); ?>
+
+        <?php foreach ($items as $item):
+            $heading = $item->displayTitle(null, $valueLang);
+            $body = $item->displayDescription(null, $valueLang);
+        ?>
+        <div class="result-row">
+            <?php if ($item->thumbnail()): ?>
+            <a href="<?php echo $escape($item->siteUrl($site->slug())); ?>">
+                <?php echo $thumbnail($item, 'square', ['class' => 'result-thumb']); ?>
+            </a>
+            <?php endif; ?>
+            <div class="result-body">
+                <h3><a href="<?php echo $escape($item->siteUrl($site->slug())); ?>"><?php echo $escape($heading); ?></a></h3>
+                <div class="meta">
+                    <?php
+                    $parts = [];
+                    $date = $item->value('dcterms:date', ['lang' => $valueLang]);
+                    if ($date) $parts[] = $escape($date);
+                    $created = $item->value('dcterms:created', ['lang' => $valueLang]);
+                    if ($created) $parts[] = 'Recorded ' . $escape($created);
+                    $extent = $item->value('dcterms:extent', ['lang' => $valueLang]);
+                    if ($extent) $parts[] = $escape($extent);
+                    $spatial = $item->value('dcterms:spatial', ['lang' => $valueLang]);
+                    if ($spatial) $parts[] = $escape($spatial);
+                    echo implode(' · ', $parts);
+                    ?>
+                </div>
+                <?php if ($body): ?>
+                <p><?php echo $escape($body); ?></p>
+                <?php endif; ?>
+                <?php
+                $subjects = $item->value('dcterms:subject', ['all' => true, 'lang' => $valueLang]);
+                if ($subjects && count($subjects)):
+                ?>
+                <div class="tag-list">
+                    <?php foreach ($subjects as $subject): ?>
+                    <span class="tag"><?php echo $escape($subject); ?></span>
+                    <?php endforeach; ?>
+                </div>
+                <?php endif; ?>
+            </div>
+        </div>
+        <?php endforeach; ?>
+
+        <?php $this->trigger('view.browse.after'); ?>
+        <?php echo $this->pagination(); ?>
+    </div>
+</section>

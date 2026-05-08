@@ -1,0 +1,46 @@
+<?php
+// Single Item Set (Collection) page
+$translate = $this->plugin('translate');
+$escape = $this->plugin('escapeHtml');
+$title = $itemSet->displayTitle();
+$description = $itemSet->value('dcterms:description');
+?>
+
+<!-- Subpage Hero -->
+<section class="subpage-hero">
+    <div class="container">
+        <div class="kicker"><?php echo $translate('Collection'); ?></div>
+        <h1><?php echo $escape($title); ?></h1>
+        <?php if ($description): ?>
+            <p><?php echo $escape($description); ?></p>
+        <?php endif; ?>
+    </div>
+</section>
+
+<!-- Items in this collection -->
+<section class="section">
+    <div class="container">
+        <?php
+        $items = $itemSet->items();
+        ?>
+        <?php if (count($items) > 0): ?>
+            <?php foreach ($items as $item): ?>
+            <div class="result-row">
+                <?php $thumb = $item->thumbnailUrl('square'); ?>
+                <?php if ($thumb): ?>
+                    <img class="result-thumb" src="<?php echo $escape($thumb); ?>" alt="<?php echo $escape($item->displayTitle()); ?>">
+                <?php endif; ?>
+                <div class="result-body">
+                    <h3><a href="<?php echo $escape($item->url()); ?>"><?php echo $escape($item->displayTitle()); ?></a></h3>
+                    <div class="meta">
+                        <?php echo $escape($item->value('dcterms:created')); ?>
+                    </div>
+                    <p><?php echo $escape($item->value('dcterms:description')); ?></p>
+                </div>
+            </div>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <p><?php echo $translate('No interviews in this collection yet.'); ?></p>
+        <?php endif; ?>
+    </div>
+</section>

@@ -1,0 +1,57 @@
+<?php
+$translate = $this->plugin('translate');
+$escape = $this->plugin('escapeHtml');
+$thumbnail = $this->plugin('thumbnail');
+$this->htmlElement('body')->appendAttribute('class', 'item-set resource browse');
+
+$filterLocale = (bool) $this->siteSetting('filter_locale_values');
+$lang = $this->lang();
+$valueLang = $filterLocale ? [$lang, ''] : null;
+?>
+
+<section class="subpage-hero">
+    <div class="container">
+        <div class="kicker"><?php echo $translate('The Archive'); ?></div>
+        <h1><?php echo $translate('Collections'); ?></h1>
+        <p><?php echo $translate('Interviews organized by theme, era, and neighborhood — each collection tells a different chapter of Arlington\'s story.'); ?></p>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <?php echo $this->searchFilters(); ?>
+
+        <div class="browse-controls">
+            <?php echo $this->pagination(); ?>
+        </div>
+
+        <?php $this->trigger('view.browse.before'); ?>
+
+        <?php if (count($itemSets) > 0): ?>
+        <div class="grid-2">
+            <?php foreach ($itemSets as $itemSet):
+                $heading = $itemSet->displayTitle(null, $valueLang);
+                $body = $itemSet->displayDescription(null, $valueLang);
+            ?>
+            <a href="<?php echo $escape($itemSet->siteUrl($site->slug())); ?>" class="card card-item-set">
+                <div class="card-body">
+                    <?php $date = $itemSet->value('dcterms:date', ['lang' => $valueLang]); ?>
+                    <?php if ($date): ?>
+                    <div class="meta"><?php echo $escape($date); ?></div>
+                    <?php endif; ?>
+                    <h3><?php echo $escape($heading); ?></h3>
+                    <?php if ($body): ?>
+                    <p><?php echo $escape($body); ?></p>
+                    <?php endif; ?>
+                </div>
+            </a>
+            <?php endforeach; ?>
+        </div>
+        <?php else: ?>
+        <p><?php echo $translate('No collections found.'); ?></p>
+        <?php endif; ?>
+
+        <?php $this->trigger('view.browse.after'); ?>
+        <?php echo $this->pagination(); ?>
+    </div>
+</section>
