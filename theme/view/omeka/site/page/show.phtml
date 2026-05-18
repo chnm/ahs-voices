@@ -28,20 +28,49 @@ $itemSets = $api->search('item_sets', ['site_id' => $site->id(), 'limit' => 6])-
 <section class="hero">
     <div class="container">
         <div class="hero-content">
-            <div class="kicker"><?php echo $translate('An Arlington Oral History Project'); ?></div>
-            <h1><?php echo $translate('The voices of a town, recorded'); ?></h1>
-            <p class="body-large"><?php echo $translate('More than eighty Arlington residents have shared their memories of the town they call home. Listen to their stories, explore the neighborhoods, and discover a living history of Arlington, Massachusetts.'); ?></p>
+            <h1><?php echo $escape($this->themeSetting('hero_headline') ?: 'The voices of a town, recorded'); ?></h1>
+            <?php $summary = $site->summary(); ?>
+            <?php if ($summary): ?>
+            <p class="body-large"><?php echo $escape($summary); ?></p>
+            <?php endif; ?>
             <div class="hero-buttons">
                 <a href="<?php echo $this->url('site/resource', ['controller' => 'item', 'action' => 'browse'], true); ?>" class="btn btn-primary"><?php echo $translate('Browse interviews'); ?></a>
             </div>
         </div>
         <div class="hero-image">
-            <div style="width: 100%; height: 100%; background: var(--paper-alt-rule); display: flex; align-items: center; justify-content: center; color: var(--paper-alt-ink-soft); font-family: var(--font-mono); font-size: 13px;">
+            <?php
+            // Pick a random item with a thumbnail for the hero
+            $allItems = $api->search('items', ['site_id' => $site->id(), 'limit' => 50])->getContent();
+            $withThumbs = array_filter($allItems, function($i) { return $i->thumbnail(); });
+            $heroItem = null;
+            if (!empty($withThumbs)) {
+                $heroItem = $withThumbs[array_rand($withThumbs)];
+            }
+            ?>
+            <?php if ($heroItem && $heroItem->thumbnail()): ?>
+            <a href="<?php echo $escape($heroItem->siteUrl($site->slug())); ?>" class="hero-image-link">
+                <?php echo $thumbnail($heroItem, 'large'); ?>
+                <span class="hero-image-caption"><?php echo $escape($heroItem->displayTitle()); ?></span>
+            </a>
+            <?php else: ?>
+            <div class="hero-image-placeholder">
                 <?php echo $translate('Hero photograph'); ?>
             </div>
+            <?php endif; ?>
         </div>
     </div>
 </section>
+
+<?php if ($this->content): ?>
+<!-- Page blocks (admin content) -->
+<section class="section">
+    <div class="container">
+        <div class="editorial">
+            <?php echo $this->content; ?>
+        </div>
+    </div>
+</section>
+<?php endif; ?>
 
 <?php if (count($recentItems) > 0): ?>
 <!-- Recently Added -->
@@ -109,17 +138,6 @@ $itemSets = $api->search('item_sets', ['site_id' => $site->id(), 'limit' => 6])-
 </section>
 <?php endif; ?>
 
-<!-- Page blocks (if admin added any) -->
-<?php if ($this->content): ?>
-<section class="section">
-    <div class="container">
-        <div class="editorial">
-            <?php echo $this->content; ?>
-        </div>
-    </div>
-</section>
-<?php endif; ?>
-
 <?php else: ?>
 <?php // ---------- Standard page ---------- ?>
 
@@ -144,5 +162,104 @@ $itemSets = $api->search('item_sets', ['site_id' => $site->id(), 'limit' => 6])-
         </div>
     </div>
 </section>
+
+<?php
+// Find child pages from the site navigation
+$childPages = [];
+$navData = $site->navigation();
+
+// Recursive search for the current page's children in the nav tree
+$findChildren = function ($items, $pageId) use (&$findChildren) {
+    foreach ($items as $item) {
+        $type = $item['type'] ?? '';
+        $id = $item['data']['id'] ?? null;
+        if ($type === 'page' && $id == $pageId) {
+            return $item['links'] ?? [];
+        }
+        if (!empty($item['links'])) {
+            $result = $findChildren($item['links'], $pageId);
+            if ($result) return $result;
+        }
+    }
+    return [];
+};
+
+$navChildren = $findChildren($navData, $page->id());
+
+if (!empty($navChildren)):
+    $api = $this->api();
+    $siteSlug = $site->slug();
+    $sitePages = $api->search('site_pages', ['site_id' => $site->id()])->getContent();
+    $pageLookup = [];
+    foreach ($sitePages as $sp) {
+        $pageLookup[$sp->id()] = $sp;
+    }
+    foreach ($navChildren as $child) {
+        if (($child['type'] ?? '') === 'page' && isset($child['data']['id'])) {
+            $childId = $child['data']['id'];
+            if (isset($pageLookup[$childId])) {
+                $childPages[] = $pageLookup[$childId];
+            }
+        }
+    }
+?>
+
+<?php if (!empty($childPages)): ?>
+<section class="section">
+    <div class="container">
+        <div class="child-pages">
+            <?php foreach ($childPages as $childPage):
+                // Try to find a thumbnail from the page's media block
+                $childThumb = null;
+                $childSnippet = '';
+                $childBlocks = $childPage->blocks();
+                foreach ($childBlocks as $block) {
+                    $layout = $block->layout();
+                    if (!$childThumb && ($layout === 'media' || $layout === 'mediaEmbed')) {
+                        $attachments = $block->attachments();
+                        foreach ($attachments as $att) {
+                            $media = $att->media();
+                            if ($media && $media->hasThumbnails()) {
+                                $childThumb = $media;
+                                break;
+                            }
+                            $attItem = $att->item();
+                            if (!$childThumb && $attItem && $attItem->thumbnail()) {
+                                $childThumb = $attItem;
+                                break;
+                            }
+                        }
+                    }
+                    if (!$childSnippet && $layout === 'html') {
+                        $blockData = $block->dataValue('html');
+                        if ($blockData) {
+                            $text = strip_tags($blockData);
+                            $childSnippet = mb_substr($text, 0, 200);
+                            if (mb_strlen($text) > 200) $childSnippet .= '…';
+                        }
+                    }
+                }
+            ?>
+            <a href="<?php echo $escape($childPage->siteUrl($site->slug())); ?>" class="child-page-card">
+                <?php if ($childThumb): ?>
+                <div class="child-page-thumb">
+                    <?php echo $thumbnail($childThumb, 'medium'); ?>
+                </div>
+                <?php endif; ?>
+                <div class="child-page-body">
+                    <h3><?php echo $escape($childPage->title()); ?></h3>
+                    <?php if ($childSnippet): ?>
+                    <p><?php echo $escape($childSnippet); ?></p>
+                    <?php endif; ?>
+                    <span class="child-page-link"><?php echo $translate('Read more'); ?> →</span>
+                </div>
+            </a>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</section>
+<?php endif; ?>
+
+<?php endif; ?>
 
 <?php endif; ?>
