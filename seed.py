@@ -47,6 +47,14 @@ def api_post(endpoint, data):
         return json.loads(resp.read())
 
 
+def api_patch(endpoint, data):
+    url = f"{API}/{endpoint}?" + urllib.parse.urlencode(AUTH)
+    body = json.dumps(data).encode("utf-8")
+    req = urllib.request.Request(url, data=body, headers={"Content-Type": "application/json"}, method="PATCH")
+    with urllib.request.urlopen(req) as resp:
+        return json.loads(resp.read())
+
+
 def api_get(endpoint):
     url = f"{API}/{endpoint}"
     with urllib.request.urlopen(url) as resp:
@@ -56,23 +64,23 @@ def api_get(endpoint):
 # ---------- Data ----------
 
 collections = [
-    {"key": "patriots", "title": "Patriots\u2019 Day & the Battle Road", "desc": "Recollections of the Battles of Lexington and Concord, the Jason Russell House skirmish, and how Arlington commemorates them.", "years": "1775\u2013present"},
-    {"key": "menotomy", "title": "Menotomy Voices", "desc": "Long-time residents reflect on growing up in Arlington \u2014 neighborhoods, schools, the Mystic Lakes, the bus to Boston.", "years": "1920s\u20131990s"},
-    {"key": "mainstreet", "title": "Mass Ave Main Street", "desc": "Shopkeepers, diner cooks, and pharmacists describe the changing face of Massachusetts Avenue.", "years": "1940s\u20132010s"},
-    {"key": "immigrant", "title": "Coming to Arlington", "desc": "Italian, Irish, Armenian, Greek, and Chinese-American families describe arrival, work, and community.", "years": "1900s\u20132020s"},
-    {"key": "civic", "title": "Town Meeting & Civic Life", "desc": "Selectmen, librarians, school committee members, and volunteers on Arlington governance.", "years": "1960s\u20132020s"},
-    {"key": "mills", "title": "The Mills on the Mystic", "desc": "Industry along Mill Brook \u2014 from Schwamb\u2019s mirrors to the ice houses of Spy Pond.", "years": "1850s\u20131950s"},
+    {"key": "civilwar", "title": "The Civil War & Freedman\u2019s Village", "desc": "Stories of Freedman\u2019s Village, the contraband camps, and Arlington\u2019s role in the Civil War and its aftermath.", "years": "1861\u2013present"},
+    {"key": "neighborhoods", "title": "Arlington Neighborhoods", "desc": "Long-time residents reflect on growing up in Arlington \u2014 Clarendon, Ballston, Cherrydale, and beyond.", "years": "1920s\u20131990s"},
+    {"key": "columbia_pike", "title": "Columbia Pike Stories", "desc": "Shopkeepers, restaurateurs, and residents describe the changing face of Columbia Pike.", "years": "1940s\u20132010s"},
+    {"key": "immigrant", "title": "Coming to Arlington", "desc": "Bolivian, Vietnamese, Ethiopian, and Salvadoran families describe arrival, work, and community.", "years": "1960s\u20132020s"},
+    {"key": "civic", "title": "County Board & Civic Life", "desc": "Board members, librarians, school officials, and volunteers on Arlington governance.", "years": "1960s\u20132020s"},
+    {"key": "pentagon", "title": "In the Shadow of the Pentagon", "desc": "Life near the Pentagon \u2014 from its construction through September 11 and the years after.", "years": "1940s\u20132020s"},
 ]
 
 interviews = [
-    {"name": "Eleanor Russell", "years": "1918\u20132014", "recorded": "June 14, 2008", "length": "1:42:18", "collection": "patriots", "neighborhood": "Arlington Center", "interviewer": "Margaret Chen", "topics": ["Jason Russell House", "Patriots\u2019 Day", "Genealogy"], "summary": "A descendant of Jason Russell recounts family stories passed down about April 19, 1775, and her decades caring for the Russell House as a docent."},
-    {"name": "Anthony Caruso", "years": "b. 1936", "recorded": "March 3, 2019", "length": "2:11:04", "collection": "mainstreet", "neighborhood": "East Arlington", "interviewer": "Sarah Whitford", "topics": ["Mass Ave", "Italian-American", "Bakery"], "summary": "Owner of Caruso\u2019s Bakery on Mass Ave from 1962 to 2004 describes apprenticing with his father and watching the avenue change."},
-    {"name": "Grace Okonjo", "years": "b. 1954", "recorded": "October 22, 2021", "length": "1:18:47", "collection": "civic", "neighborhood": "Arlington Heights", "interviewer": "David Park", "topics": ["Town Meeting", "School Committee", "Civil Rights"], "summary": "The first African-American woman elected to Arlington Town Meeting reflects on civic life from the 1980s onward."},
-    {"name": "Patrick Donovan", "years": "1929\u20132020", "recorded": "August 9, 2011", "length": "2:48:33", "collection": "menotomy", "neighborhood": "East Arlington", "interviewer": "Margaret Chen", "topics": ["Spy Pond", "Ice harvesting", "Childhood"], "summary": "Recollections of the last commercial ice cuttings on Spy Pond and growing up by the Mystic Lakes."},
-    {"name": "Vartan Aramian", "years": "b. 1947", "recorded": "May 2, 2017", "length": "1:55:09", "collection": "immigrant", "neighborhood": "Brattle Street", "interviewer": "Lila Hovsepian", "topics": ["Armenian community", "Watertown", "Rugs"], "summary": "Arrival from Beirut in 1972 and the Armenian community connecting Watertown and Arlington."},
-    {"name": "Ruth Schwamb", "years": "1924\u20132018", "recorded": "July 19, 2010", "length": "1:12:55", "collection": "mills", "neighborhood": "Arlington Heights", "interviewer": "Margaret Chen", "topics": ["Schwamb Mill", "Industry", "Mill Brook"], "summary": "A Schwamb family member describes the picture-frame mill\u2019s last working days and the decision to make it a museum."},
-    {"name": "Helen Lee", "years": "b. 1962", "recorded": "February 11, 2023", "length": "1:34:21", "collection": "immigrant", "neighborhood": "Arlington Center", "interviewer": "David Park", "topics": ["Chinese-American", "Restaurants", "School"], "summary": "A second-generation Chinese-American restaurateur on family, food, and Arlington High School."},
-    {"name": "James McGrath", "years": "b. 1941", "recorded": "November 4, 2015", "length": "2:02:11", "collection": "menotomy", "neighborhood": "Arlington Heights", "interviewer": "Sarah Whitford", "topics": ["Buses", "Boston", "Mystic Lakes"], "summary": "A retired MBTA driver remembers the 77 bus route and weekends at the Mystic Lakes."},
+    {"name": "Dorothy Henderson", "years": "1920\u20132015", "recorded": "June 14, 2008", "length": "1:42:18", "collection": "civilwar", "neighborhood": "South Arlington", "interviewer": "Margaret Chen", "topics": ["Freedman\u2019s Village", "Arlington Cemetery", "Genealogy"], "summary": "A descendant of Freedman\u2019s Village residents traces her family\u2019s story from the Civil War contraband camps to modern-day Arlington."},
+    {"name": "Marco Escobar", "years": "b. 1958", "recorded": "March 3, 2019", "length": "2:11:04", "collection": "columbia_pike", "neighborhood": "Columbia Pike", "interviewer": "Sarah Whitford", "topics": ["Columbia Pike", "Salvadoran-American", "Restaurant"], "summary": "Owner of a pupuseria on Columbia Pike since 1989 describes building a Salvadoran community hub along the corridor."},
+    {"name": "Grace Okonjo", "years": "b. 1954", "recorded": "October 22, 2021", "length": "1:18:47", "collection": "civic", "neighborhood": "Clarendon", "interviewer": "David Park", "topics": ["County Board", "School Board", "Civil Rights"], "summary": "A longtime Arlington County Board member reflects on civic life and the fight for equitable development."},
+    {"name": "Robert Tran", "years": "b. 1965", "recorded": "August 9, 2011", "length": "2:48:33", "collection": "neighborhoods", "neighborhood": "Ballston", "interviewer": "Margaret Chen", "topics": ["Ballston", "Development", "Childhood"], "summary": "Memories of Ballston before the Metro arrived and watching the neighborhood transform from suburban to urban."},
+    {"name": "Fatima Yohannes", "years": "b. 1972", "recorded": "May 2, 2017", "length": "1:55:09", "collection": "immigrant", "neighborhood": "Buckingham", "interviewer": "Lila Hovsepian", "topics": ["Ethiopian community", "Restaurants", "Culture"], "summary": "Arrival from Addis Ababa in 1995 and building the Ethiopian restaurant and cultural scene along Columbia Pike."},
+    {"name": "Thomas Kelley", "years": "1935\u20132019", "recorded": "July 19, 2010", "length": "1:12:55", "collection": "pentagon", "neighborhood": "Pentagon City", "interviewer": "Margaret Chen", "topics": ["Pentagon", "September 11", "Military"], "summary": "A retired Pentagon employee describes working there for thirty years, including the morning of September 11, 2001."},
+    {"name": "Linh Nguyen", "years": "b. 1962", "recorded": "February 11, 2023", "length": "1:34:21", "collection": "immigrant", "neighborhood": "Cherrydale", "interviewer": "David Park", "topics": ["Vietnamese-American", "Restaurants", "School"], "summary": "A second-generation Vietnamese-American restaurateur on family, pho, and growing up in Arlington in the 1970s."},
+    {"name": "James Patterson", "years": "b. 1941", "recorded": "November 4, 2015", "length": "2:02:11", "collection": "neighborhoods", "neighborhood": "Lyon Village", "interviewer": "Sarah Whitford", "topics": ["Metro", "Rosslyn", "Clarendon"], "summary": "A retired Metro planner remembers the Orange Line\u2019s arrival and how it reshaped the Rosslyn-Ballston corridor."},
 ]
 
 
@@ -131,9 +139,26 @@ for i in interviews:
     if spatial_id:
         data["dcterms:spatial"] = [{"type": "literal", "property_id": spatial_id, "@value": i["neighborhood"]}]
 
+    # Add a placeholder thumbnail via picsum
+    seed_name = i["name"].lower().replace(" ", "-")
+    data["o:media"] = [{
+        "o:ingester": "url",
+        "o:source": f"https://picsum.photos/seed/{seed_name}/800/600",
+        "ingest_url": f"https://picsum.photos/seed/{seed_name}/800/600",
+        "dcterms:title": [{"type": "literal", "property_id": prop_id("dcterms:title"), "@value": f"Portrait of {i['name']}"}],
+    }]
+
     resp = api_post("items", data)
     print(f"  Created item: {i['name']} (ID: {resp['o:id']})")
 
+
+# ---------- Assign Item Sets to Site ----------
+
+SITE_ID = 1
+print("\nAssigning item sets to site...")
+site_item_sets = [{"o:item_set": {"o:id": sid}} for sid in set_ids.values()]
+api_patch(f"sites/{SITE_ID}", {"o:site_item_set": site_item_sets})
+print(f"  Assigned {len(site_item_sets)} item sets to site {SITE_ID}")
 
 print(f"\nDone! Created {len(collections)} item sets and {len(interviews)} items.")
 print("Visit http://localhost:8080/admin to verify, then browse the public site.")

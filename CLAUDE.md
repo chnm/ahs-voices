@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-Custom Omeka S theme ("Patriots' Path") for the Arlington Historical Society oral history archive. The theme presents 80+ recorded interviews with Arlington, MA residents. Design prototype is in `prototype/` (React/HTML reference, not production code).
+Custom Omeka S theme ("Patriots' Path") for the Arlington Historical Society oral history archive. The theme presents 80+ recorded interviews with Arlington, VA residents. Design prototype is in `prototype/` (React/HTML reference, not production code).
 
 ## Development Environment
 

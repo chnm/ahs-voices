@@ -2,7 +2,7 @@
 
 ## Overview
 
-A custom theme for the **Arlington Historical Society's** oral history archive, hosted on **Omeka S**. The site presents 80+ recorded interviews with Arlington, MA residents — searchable, browseable, and grouped into thematic item sets and curated exhibits. The signature feature is a **synced transcript** on each interview page: clicking any paragraph jumps the audio to that moment.
+A custom theme for the **Arlington Historical Society's** oral history archive, hosted on **Omeka S**. The site presents 80+ recorded interviews with Arlington, VA residents — searchable, browseable, and grouped into thematic item sets and curated exhibits. The signature feature is a **synced transcript** on each interview page: clicking any paragraph jumps the audio to that moment.
 
 The locked design direction is **"Patriots' Path"** — a modern civic-editorial aesthetic with navy/crimson/parchment palette, slab-serif headlines (Bitter), and Inter for body. It nods to Patriots' Day and town history without being kitsch.
 
