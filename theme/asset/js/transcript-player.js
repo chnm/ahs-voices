@@ -55,7 +55,7 @@
         var interviewer = meta.interviewer || '';
         var date = meta.date || '';
         var url = meta.url || '';
-        var project = meta.project || 'Arlington Historical Society Oral History Project';
+        var project = meta.project || 'Oral History Project';
 
         // Parse date for APA/MLA formatting
         var dateObj = date ? new Date(date) : null;

@@ -34,11 +34,10 @@ $userBar = $this->userBar();
         <!-- Pre-header strip -->
         <div class="pre-header">
             <div class="container">
-                <span><?php echo $translate('An ongoing project of the'); ?> <a href="#" class="pre-header-highlight"><?php echo $translate('Arlington Historical Society'); ?></a></span>
+                <span><?php echo $translate('A project of the'); ?> <a href="https://arlhist.org" class="pre-header-highlight"><?php echo $translate('Arlington Historical Society'); ?></a></span>
                 <span>
-                    <a href="#"><?php echo $translate('Visit AHS'); ?></a>
-                    <a href="#"><?php echo $translate('Donate'); ?></a>
-                    <a href="#"><?php echo $translate('Contribute a story'); ?></a>
+                    <a href="https://arlhist.org/visit/"><?php echo $translate('Visit AHS'); ?></a>
+                    <a href="https://arlhist.org/support/donate/"><?php echo $translate('Donate'); ?></a>
                 </span>
             </div>
         </div>
@@ -48,20 +47,17 @@ $userBar = $this->userBar();
             <div class="container">
                 <h1 class="site-title">
                     <a href="<?php echo $site->url(); ?>">
+                    <?php $subtitle = $this->themeSetting('site_subtitle'); ?>
                     <?php if ($this->themeSetting('logo')): ?>
-                        <img src="<?php echo $this->themeSettingAssetUrl('logo'); ?>" alt="<?php echo $escape($siteTitle); ?>" />
-                    <?php else: ?>
-                        <svg class="logomark" width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                            <rect width="36" height="36" rx="4" fill="#A12C2C"/>
-                            <path d="M18 8l7 12H11l7-12z" fill="#F5E9D0"/>
-                            <line x1="10" y1="24" x2="26" y2="24" stroke="#F5E9D0" stroke-width="2"/>
-                            <line x1="10" y1="28" x2="26" y2="28" stroke="#F5E9D0" stroke-width="2"/>
-                        </svg>
-                        <span class="wordmark">
-                            <span class="wordmark-name"><?php echo $translate('Arlington Historical Society'); ?></span>
-                            <span class="wordmark-subtitle"><?php echo $translate('Oral History Project'); ?></span>
-                        </span>
+                        <img class="header-logo" src="<?php echo $this->themeSettingAssetUrl('logo'); ?>" alt="<?php echo $escape($siteTitle); ?>" />
+                        <span class="header-divider" aria-hidden="true"></span>
                     <?php endif; ?>
+                    <span class="wordmark <?php echo $subtitle ? 'wordmark-has-subtitle' : 'wordmark-title-only'; ?>">
+                        <span class="wordmark-name"><?php echo $escape($siteTitle); ?></span>
+                        <?php if ($subtitle): ?>
+                        <span class="wordmark-subtitle"><?php echo $escape($subtitle); ?></span>
+                        <?php endif; ?>
+                    </span>
                     </a>
                 </h1>
                 <nav id="top-nav">
@@ -86,14 +82,12 @@ $userBar = $this->userBar();
         <!-- Footer -->
         <footer class="site-footer">
             <div class="container">
-                <?php if ($footerContent = $this->themeSetting('footer_content')): ?>
-                    <?php echo $footerContent; ?>
-                <?php else: ?>
                 <div class="footer-grid">
                     <div class="footer-col">
-                        <h4><?php echo $translate('Arlington Historical Society'); ?></h4>
+                        <h4><?php echo $escape($siteTitle); ?></h4>
+                        <?php $footerDesc = $this->themeSetting('footer_content'); ?>
                         <p style="font-size: 14px; line-height: 1.6;">
-                            <?php echo $translate('Preserving and sharing the stories of Arlington, Massachusetts through recorded interviews with residents.'); ?>
+                            <?php echo $escape($footerDesc ?: 'Preserving and sharing the stories of Arlington, Virginia, through recorded interviews with residents.'); ?>
                         </p>
                     </div>
                     <div class="footer-col">
@@ -117,9 +111,8 @@ $userBar = $this->userBar();
                     </div>
                 </div>
                 <div class="footer-bottom">
-                    <?php echo sprintf($translate('&copy; %s Arlington Historical Society. All rights reserved.'), date('Y')); ?>
+                    <?php echo sprintf($translate('&copy; %s %s. All rights reserved.'), date('Y'), $escape($siteTitle)); ?>
                 </div>
-                <?php endif; ?>
             </div>
         </footer>
     </body>

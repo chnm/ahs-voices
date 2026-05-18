@@ -136,7 +136,7 @@ $this->headScript()->appendFile($this->assetUrl('js/transcript-player.js'));
                     'interviewer' => $citeContributor ? str_replace('Interviewed by ', '', (string) $citeContributor) : '',
                     'date' => (string) $citeDate,
                     'url' => $citeUrl,
-                    'project' => 'Arlington Historical Society Oral History Project',
+                    'project' => $site->title() . ' Oral History Project',
                 ]);
                 ?>
                 <section id="citation-generator" data-citation="<?php echo $escape($citeMeta); ?>">
