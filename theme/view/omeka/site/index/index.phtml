@@ -30,15 +30,15 @@ $itemSets = $api->search('item_sets', ['site_id' => $site->id(), 'limit' => 6])-
         <div class="hero-image">
             <?php
             $allItems = $api->search('items', ['site_id' => $site->id(), 'limit' => 50])->getContent();
-            $withThumbs = array_filter($allItems, function($i) { return $i->thumbnail(); });
+            $withThumbs = array_filter($allItems, function($i) { return $i->primaryMedia() && $i->primaryMedia()->hasThumbnails(); });
             $heroItem = null;
             if (!empty($withThumbs)) {
                 $heroItem = $withThumbs[array_rand($withThumbs)];
             }
             ?>
-            <?php if ($heroItem && $heroItem->thumbnail()): ?>
+            <?php if ($heroItem): ?>
             <a href="<?php echo $escape($heroItem->siteUrl($site->slug())); ?>" class="hero-image-link">
-                <?php echo $thumbnail($heroItem, 'large'); ?>
+                <?php echo $thumbnail($heroItem->primaryMedia(), 'large'); ?>
                 <span class="hero-image-caption"><?php echo $escape($heroItem->displayTitle()); ?></span>
             </a>
             <?php else: ?>
