@@ -53,9 +53,16 @@ $itemSets = $api->search('item_sets', ['site_id' => $site->id(), 'limit' => 6])-
                 <span class="hero-image-caption"><?php echo $escape($heroItem->displayTitle()); ?></span>
             </a>
             <?php else: ?>
-            <div class="hero-image-placeholder">
-                <?php echo $translate('Hero photograph'); ?>
-            </div>
+            <?php
+            $fallbackHeroImages = [
+                'arlingtonhouseearly20thcentlocpublic_720.jpg',
+                'HenryGray1005SQuinnArlingtonViewClark.jpg',
+                'QueenCity__1564066687530__w1920.jpg',
+                'WalkerBrick__1564067733927__w1920.jpg',
+            ];
+            $fallback = $fallbackHeroImages[array_rand($fallbackHeroImages)];
+            ?>
+            <img src="<?php echo $this->assetUrl('img/hero/' . $fallback); ?>" alt="" />
             <?php endif; ?>
         </div>
     </div>
