@@ -93,25 +93,19 @@ $userBar = $this->userBar();
                     <div class="footer-col">
                         <h4><?php echo $translate('Explore'); ?></h4>
                         <a href="<?php echo $site->url(); ?>"><?php echo $translate('Home'); ?></a>
-                        <a href="#"><?php echo $translate('Browse Interviews'); ?></a>
-                        <a href="#"><?php echo $translate('Collections'); ?></a>
-                        <a href="#"><?php echo $translate('Exhibits'); ?></a>
+                        <a href="<?php echo $this->url('site/resource', ['controller' => 'item', 'action' => 'browse'], true); ?>"><?php echo $translate('Browse Interviews'); ?></a>
+                        <a href="<?php echo $this->url('site/resource', ['controller' => 'item-set', 'action' => 'browse'], true); ?>"><?php echo $translate('Collections'); ?></a>
                     </div>
                     <div class="footer-col">
                         <h4><?php echo $translate('The Society'); ?></h4>
-                        <a href="#"><?php echo $translate('About AHS'); ?></a>
-                        <a href="#"><?php echo $translate('Visit Us'); ?></a>
-                        <a href="#"><?php echo $translate('Donate'); ?></a>
-                    </div>
-                    <div class="footer-col">
-                        <h4><?php echo $translate('Project'); ?></h4>
-                        <a href="#"><?php echo $translate('About This Project'); ?></a>
-                        <a href="#"><?php echo $translate('Contribute a Story'); ?></a>
-                        <a href="#"><?php echo $translate('Rights & Permissions'); ?></a>
+                        <a href="https://arlhist.org"><?php echo $translate('About AHS'); ?></a>
+                        <a href="https://arlhist.org/visit/"><?php echo $translate('Visit Us'); ?></a>
+                        <a href="https://arlhist.org/support/donate/"><?php echo $translate('Donate'); ?></a>
                     </div>
                 </div>
                 <div class="footer-bottom">
                     <?php echo sprintf($translate('&copy; %s %s. All rights reserved.'), date('Y'), $escape($siteTitle)); ?>
+                    Developed in collaboration with the <a href="https://rrchnm.org">Roy Rosenzweig Center for History and New Media</a> at <a href="https://gmu.edu">George Mason University</a>.
                 </div>
             </div>
         </footer>

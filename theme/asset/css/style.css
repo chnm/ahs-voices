@@ -252,14 +252,14 @@ h3 {
 
 .site-title .wordmark-title-only .wordmark-name {
     font-family: var(--font-display);
-    font-size: 20px;
+    font-size: 24px;
     font-weight: 600;
     color: var(--paper-alt-ink);
 }
 
 .site-title .wordmark-has-subtitle .wordmark-name {
     font-family: var(--font-display);
-    font-size: 18px;
+    font-size: 22px;
     font-weight: 600;
     color: var(--paper-alt-ink);
 }
@@ -299,7 +299,7 @@ h3 {
     display: block;
     padding: 20px 16px;
     font-family: var(--font-body);
-    font-size: 14px;
+    font-size: 18px;
     font-weight: 500;
     color: var(--paper-alt-ink-soft);
     text-decoration: none;
@@ -1404,6 +1404,7 @@ h3 {
 
 .footer-col a:hover {
     color: var(--paper-alt-ink);
+    text-decoration: underline;
 }
 
 .footer-bottom {
@@ -1411,6 +1412,16 @@ h3 {
     padding-top: 20px;
     font-size: 12px;
     color: var(--paper-alt-ink-soft);
+}
+
+.footer-bottom a {
+    color: var(--paper-alt-ink-soft);
+    text-decoration: none;
+}
+
+.footer-bottom a:hover {
+    color: var(--paper-alt-ink);
+    text-decoration: underline;
 }
 
 /* ---------- About / Editorial ---------- */
@@ -1618,9 +1629,9 @@ h3 {
     list-style: none;
     padding: 0;
     margin: 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
 }
 
 .block-browsePreview .resource-list li.resource {
@@ -1637,12 +1648,13 @@ h3 {
 }
 
 .block-browsePreview .resource-list li.resource img {
-    width: 100%;
-    aspect-ratio: 4 / 3;
+    width: 48px;
+    height: 48px;
     object-fit: cover;
-    display: block;
-    border-radius: var(--radius) var(--radius) 0 0;
-    margin-bottom: 16px;
+    border-radius: 4px;
+    float: left;
+    margin-right: 16px;
+    aspect-ratio: auto;
 }
 
 .block-browsePreview .resource-list .resource-link {
