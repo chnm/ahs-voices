@@ -51,8 +51,6 @@ $this->headScript()->appendFile($this->assetUrl('js/transcript-player.js'));
                 <div class="meta">
                     <?php
                     $parts = [];
-                    $date = $item->value('dcterms:date', ['lang' => $valueLang]);
-                    if ($date) $parts[] = $escape($date);
                     $created = $item->value('dcterms:created', ['lang' => $valueLang]);
                     if ($created) $parts[] = 'Recorded ' . $escape($created);
                     $extent = $item->value('dcterms:extent', ['lang' => $valueLang]);
@@ -76,29 +74,82 @@ $this->headScript()->appendFile($this->assetUrl('js/transcript-player.js'));
     <div class="container">
         <div class="interview-layout">
             <!-- Left: Media + Transcript -->
-            <div>
+            <div class="interview-main">
                 <?php $this->trigger('view.show.before'); ?>
 
-                <!-- Omeka resource page blocks (media embeds, values, etc.) -->
-                <?php echo $this->resourcePageBlocks($item)->getBlocks(); ?>
+                <!-- Media embeds -->
+                <?php
+                $medias = $item->media();
+                foreach ($medias as $media):
+                    $mediaType = $media->mediaType();
+                    $isAV = $mediaType && (strpos($mediaType, 'audio') === 0 || strpos($mediaType, 'video') === 0);
+                ?>
+                <div class="<?php echo $isAV ? 'media-player' : 'media-embed'; ?>">
+                    <?php echo $media->render(); ?>
+                </div>
+                <?php endforeach; ?>
+
+                <!-- Transcript -->
+                <?php $transcriptValue = $item->value('oralhistory:transcript', ['lang' => $valueLang]); ?>
+                <?php if ($transcriptValue): ?>
+                <div class="transcript-section">
+                    <h2><?php echo $translate('Transcript'); ?></h2>
+                    <div class="transcript-text">
+                        <?php echo nl2br($escape($transcriptValue)); ?>
+                    </div>
+                </div>
+                <?php endif; ?>
 
                 <?php $this->trigger('view.show.after'); ?>
             </div>
 
             <!-- Right: Sidebar -->
             <aside class="interview-sidebar">
-                <!-- Topics -->
-                <?php
-                $subjects = $item->value('dcterms:subject', ['all' => true, 'lang' => $valueLang]);
-                if ($subjects && count($subjects)):
-                ?>
+                <?php $recorded = $item->value('dcterms:created', ['lang' => $valueLang]); ?>
+                <?php if ($recorded): ?>
                 <section>
-                    <h4><?php echo $translate('Topics'); ?></h4>
-                    <div class="tag-list">
-                        <?php foreach ($subjects as $subject): ?>
-                        <span class="tag"><?php echo $escape($subject); ?></span>
-                        <?php endforeach; ?>
-                    </div>
+                    <h4><?php echo $translate('Recorded'); ?></h4>
+                    <p class="sidebar-value"><?php echo $escape($recorded); ?></p>
+                </section>
+                <?php endif; ?>
+
+                <?php $duration = $item->value('dcterms:extent', ['lang' => $valueLang]); ?>
+                <?php if ($duration): ?>
+                <section>
+                    <h4><?php echo $translate('Duration'); ?></h4>
+                    <p class="sidebar-value"><?php echo $escape($duration); ?></p>
+                </section>
+                <?php endif; ?>
+
+                <?php $location = $item->value('dcterms:spatial', ['lang' => $valueLang]); ?>
+                <?php if ($location): ?>
+                <section>
+                    <h4><?php echo $translate('Neighborhood'); ?></h4>
+                    <p class="sidebar-value"><?php echo $escape($location); ?></p>
+                </section>
+                <?php endif; ?>
+
+                <?php $intLocation = $item->value('oralhistory:interviewLocation', ['lang' => $valueLang]); ?>
+                <?php if ($intLocation): ?>
+                <section>
+                    <h4><?php echo $translate('Interview Location'); ?></h4>
+                    <p class="sidebar-value"><?php echo $escape($intLocation); ?></p>
+                </section>
+                <?php endif; ?>
+
+                <?php $tStatus = $item->value('oralhistory:transcriptStatus', ['lang' => $valueLang]); ?>
+                <?php if ($tStatus): ?>
+                <section>
+                    <h4><?php echo $translate('Transcript Status'); ?></h4>
+                    <p class="sidebar-value"><?php echo $escape($tStatus); ?></p>
+                </section>
+                <?php endif; ?>
+
+                <?php $transcriber = $item->value('oralhistory:transcriber', ['lang' => $valueLang]); ?>
+                <?php if ($transcriber): ?>
+                <section>
+                    <h4><?php echo $translate('Transcriber'); ?></h4>
+                    <p class="sidebar-value"><?php echo $escape($transcriber); ?></p>
                 </section>
                 <?php endif; ?>
 
@@ -121,6 +172,21 @@ $this->headScript()->appendFile($this->assetUrl('js/transcript-player.js'));
                     <?php foreach ($itemSets as $is): ?>
                     <a href="<?php echo $escape($is->siteUrl($site->slug())); ?>" style="display: block; font-size: 14px; margin-bottom: 4px;"><?php echo $escape($is->displayTitle()); ?></a>
                     <?php endforeach; ?>
+                </section>
+                <?php endif; ?>
+
+                <!-- Topics -->
+                <?php
+                $subjects = $item->value('dcterms:subject', ['all' => true, 'lang' => $valueLang]);
+                if ($subjects && count($subjects)):
+                ?>
+                <section>
+                    <h4><?php echo $translate('Topics'); ?></h4>
+                    <div class="tag-list">
+                        <?php foreach ($subjects as $subject): ?>
+                        <span class="tag"><?php echo $escape($subject); ?></span>
+                        <?php endforeach; ?>
+                    </div>
                 </section>
                 <?php endif; ?>
 

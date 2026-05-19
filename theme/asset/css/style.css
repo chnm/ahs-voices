@@ -1,5 +1,5 @@
 /* ============================================================
-   AHS Oral History — Patriots' Path Theme
+   AHS Oral History
    ============================================================ */
 
 /* ---------- Design Tokens ---------- */
@@ -183,6 +183,9 @@ h3 {
 .pre-header a {
     color: var(--paper-alt-ink-soft);
     text-decoration: none;
+}
+
+.pre-header .container > span:last-child a {
     margin-left: 16px;
 }
 
@@ -1136,6 +1139,79 @@ h3 {
     padding: 0 2px;
 }
 
+/* ---------- Transcript ---------- */
+
+.transcript-section {
+    margin-top: 32px;
+}
+
+.transcript-section h2 {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--rule);
+}
+
+.transcript-text {
+    font-size: 15px;
+    line-height: 1.8;
+    color: var(--ink);
+}
+
+.transcript-timestamp {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--brand);
+    text-decoration: none;
+    background: rgba(161, 44, 44, 0.08);
+    padding: 1px 5px;
+    border-radius: 3px;
+    transition: background 0.15s, color 0.15s;
+    cursor: pointer;
+}
+
+.transcript-timestamp:hover {
+    background: var(--brand);
+    color: var(--brand-ink);
+}
+
+.transcript-timestamp.active {
+    background: var(--brand);
+    color: var(--brand-ink);
+}
+
+/* ---------- Media Embeds ---------- */
+
+.media-embed {
+    margin-bottom: 24px;
+}
+
+.media-embed img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius);
+    display: block;
+}
+
+.media-player {
+    margin-bottom: 24px;
+    position: sticky;
+    top: 16px;
+    z-index: 10;
+    background: var(--paper);
+    padding: 12px;
+    /* border-radius: var(--radius); */
+    /* box-shadow: var(--card-shadow); */
+}
+
+.media-player audio,
+.media-player video {
+    width: 100%;
+    /* border-radius: var(--radius); */
+}
+
 /* ---------- Interview Sidebar ---------- */
 
 .interview-sidebar section {
@@ -1150,6 +1226,12 @@ h3 {
     letter-spacing: 0.12em;
     color: var(--ink-soft);
     margin-bottom: 12px;
+}
+
+.sidebar-value {
+    font-size: 14px;
+    color: var(--ink);
+    margin: 0;
 }
 
 /* ---------- Citation Generator ---------- */
@@ -1580,6 +1662,10 @@ h3 {
     font-size: 14px;
     line-height: 1.5;
     margin-top: 8px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .block-browsePreview .preview-block > a {
@@ -1595,4 +1681,215 @@ h3 {
 
 .block-browsePreview .preview-block > a:hover {
     border-bottom-color: var(--brand);
+}
+
+/* ---------- Faceted Browse ---------- */
+
+.faceted-browse-page #container {
+    margin: 0;
+    gap: 32px;
+}
+
+.faceted-browse-page .subpage-hero {
+    margin-bottom: 0;
+}
+
+/* Sidebar */
+.faceted-browse-page #section-sidebar {
+    padding: 24px;
+    background: var(--accent-soft);
+    border-radius: var(--radius);
+    width: 280px;
+    flex-shrink: 0;
+}
+
+.faceted-browse-page #section-content {
+    flex: 1;
+    width: auto;
+    padding-left: 0;
+}
+
+/* Category links */
+.faceted-browse-page #categories li {
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 0;
+    padding: 0;
+}
+
+.faceted-browse-page #categories a {
+    display: block;
+    padding: 10px 0;
+    color: var(--ink);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.faceted-browse-page #categories a:hover {
+    color: var(--brand);
+}
+
+/* Facet fieldsets */
+.faceted-browse-page .facet legend {
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 8px;
+}
+
+.faceted-browse-page .facet label {
+    font-size: 14px;
+    color: var(--ink-soft);
+    padding: 4px 0;
+    cursor: pointer;
+    align-items: center;
+}
+
+.faceted-browse-page .facet label:hover {
+    color: var(--ink);
+}
+
+.faceted-browse-page .facet label input {
+    accent-color: var(--brand);
+}
+
+/* Results table */
+.faceted-browse-page #section-content table {
+    border-collapse: collapse;
+}
+
+.faceted-browse-page #section-content table th {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-soft);
+    padding: 8px 12px;
+    border-bottom: 2px solid var(--rule);
+    text-align: left;
+}
+
+.faceted-browse-page #section-content table td {
+    padding: 12px;
+    border-bottom: 1px solid var(--rule);
+    font-size: 14px;
+    color: var(--ink);
+}
+
+.faceted-browse-page #section-content table tr:hover td {
+    background: var(--accent-soft);
+}
+
+.faceted-browse-page .resource-link {
+    text-decoration: none;
+    color: var(--ink);
+}
+
+.faceted-browse-page .resource-link:hover .resource-name {
+    color: var(--brand);
+}
+
+.faceted-browse-page .resource-name {
+    font-family: var(--font-display);
+    font-weight: 600;
+    transition: color 0.15s;
+}
+
+.faceted-browse-page .resource-link img {
+    border-radius: 4px;
+}
+
+/* Results as list */
+.faceted-browse-page .faceted-results ul {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.faceted-browse-page .faceted-results li {
+    padding: 16px;
+    background: var(--paper);
+    border-radius: var(--radius);
+    box-shadow: var(--card-shadow);
+}
+
+/* Browse controls (sort, pagination) */
+.faceted-browse-page .browse-controls {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 16px;
+    font-size: 14px;
+}
+
+.faceted-browse-page .browse-controls select {
+    font-family: var(--font-body);
+    font-size: 13px;
+    padding: 6px 10px;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    background: var(--paper);
+    color: var(--ink);
+}
+
+.faceted-browse-page .pagination a,
+.faceted-browse-page .pagination span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    height: 32px;
+    padding: 0 8px;
+    border-radius: var(--radius);
+    font-size: 13px;
+    text-decoration: none;
+    color: var(--ink);
+}
+
+.faceted-browse-page .pagination a:hover {
+    background: var(--accent-soft);
+}
+
+.faceted-browse-page .pagination .active {
+    background: var(--brand);
+    color: var(--brand-ink);
+}
+
+/* Permalink button */
+.faceted-browse-page .button.permalink {
+    font-size: 13px;
+    padding: 6px 12px;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    color: var(--ink);
+    cursor: pointer;
+}
+
+.faceted-browse-page .button.permalink:hover {
+    background: var(--accent-soft);
+}
+
+/* Mobile sidebar modal */
+.faceted-browse-page #section-sidebar-modal-toggle {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 600;
+    padding: 10px 20px;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    color: var(--ink);
+    cursor: pointer;
+    margin-bottom: 16px;
+}
+
+@media (max-width: 39.9988em) {
+    .faceted-browse-page #section-sidebar.open {
+        background-color: var(--paper);
+        padding: 24px;
+    }
 }

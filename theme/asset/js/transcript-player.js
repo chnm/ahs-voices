@@ -111,9 +111,62 @@
         }, 2000);
     }
 
+    // ---------- Transcript Sync ----------
+
+    function initTranscriptSync() {
+        var transcriptEl = document.querySelector('.transcript-text');
+        if (!transcriptEl) return;
+
+        // Find the audio/video element on the page
+        var audio = document.querySelector('.media-player audio') || document.querySelector('.media-player video');
+        if (!audio) return;
+
+        // Parse [HH:MM:SS] timestamps in the transcript and make them clickable
+        var html = transcriptEl.innerHTML;
+        html = html.replace(/\[(\d{1,2}):(\d{2}):(\d{2})\]/g, function (match, h, m, s) {
+            var seconds = parseInt(h) * 3600 + parseInt(m) * 60 + parseInt(s);
+            return '<a href="#" class="transcript-timestamp" data-seconds="' + seconds + '">' + match + '</a>';
+        });
+        transcriptEl.innerHTML = html;
+
+        // Click handler for timestamps
+        transcriptEl.addEventListener('click', function (e) {
+            var link = e.target.closest('.transcript-timestamp');
+            if (!link) return;
+            e.preventDefault();
+            var seconds = parseFloat(link.dataset.seconds);
+            audio.currentTime = seconds;
+            audio.play();
+        });
+
+        // Highlight the active transcript segment as audio plays
+        var timestamps = transcriptEl.querySelectorAll('.transcript-timestamp');
+        if (timestamps.length === 0) return;
+
+        audio.addEventListener('timeupdate', function () {
+            var currentTime = audio.currentTime;
+            var active = null;
+
+            for (var i = timestamps.length - 1; i >= 0; i--) {
+                if (parseFloat(timestamps[i].dataset.seconds) <= currentTime) {
+                    active = timestamps[i];
+                    break;
+                }
+            }
+
+            timestamps.forEach(function (ts) {
+                ts.classList.remove('active');
+            });
+            if (active) {
+                active.classList.add('active');
+            }
+        });
+    }
+
     // ---------- Init ----------
 
     document.addEventListener('DOMContentLoaded', function () {
         initCitationGenerator();
+        initTranscriptSync();
     });
 })();
