@@ -41,7 +41,7 @@ $valueLang = $filterLocale ? [$lang, ''] : null;
                     <?php endif; ?>
                     <h3><?php echo $escape($heading); ?></h3>
                     <?php if ($body): ?>
-                    <p><?php echo $escape($body); ?></p>
+                    <p><?php echo $escape(mb_substr($body, 0, 200) . (mb_strlen($body) > 200 ? '…' : '')); ?></p>
                     <?php endif; ?>
                 </div>
             </a>

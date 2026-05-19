@@ -35,7 +35,6 @@ endif;
     <div class="container">
         <div class="kicker"><?php echo $translate('The Archive'); ?></div>
         <h1><?php echo $translate('Browse Interviews'); ?></h1>
-        <p><?php echo $translate('Explore more than eighty recorded conversations with Arlington residents, spanning a century of town life.'); ?></p>
     </div>
 </section>
 <?php endif; ?>
@@ -59,9 +58,10 @@ endif;
             $body = $item->displayDescription(null, $valueLang);
         ?>
         <div class="result-row">
-            <?php if ($item->thumbnail()): ?>
+            <?php $media = $item->primaryMedia(); ?>
+            <?php if ($media && $media->hasThumbnails()): ?>
             <a href="<?php echo $escape($item->siteUrl($site->slug())); ?>">
-                <?php echo $thumbnail($item, 'square', ['class' => 'result-thumb']); ?>
+                <?php echo $thumbnail($media, 'square', ['class' => 'result-thumb']); ?>
             </a>
             <?php endif; ?>
             <div class="result-body">
@@ -69,8 +69,6 @@ endif;
                 <div class="meta">
                     <?php
                     $parts = [];
-                    $date = $item->value('dcterms:date', ['lang' => $valueLang]);
-                    if ($date) $parts[] = $escape($date);
                     $created = $item->value('dcterms:created', ['lang' => $valueLang]);
                     if ($created) $parts[] = 'Recorded ' . $escape($created);
                     $extent = $item->value('dcterms:extent', ['lang' => $valueLang]);
@@ -81,7 +79,7 @@ endif;
                     ?>
                 </div>
                 <?php if ($body): ?>
-                <p><?php echo $escape($body); ?></p>
+                <p><?php echo $escape(mb_substr($body, 0, 200) . (mb_strlen($body) > 200 ? '…' : '')); ?></p>
                 <?php endif; ?>
                 <?php
                 $subjects = $item->value('dcterms:subject', ['all' => true, 'lang' => $valueLang]);

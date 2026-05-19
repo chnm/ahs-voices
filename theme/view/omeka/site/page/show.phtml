@@ -100,7 +100,7 @@ $itemSets = $api->search('item_sets', ['site_id' => $site->id(), 'limit' => 6])-
                     <h3><?php echo $escape($item->displayTitle()); ?></h3>
                     <?php $desc = $item->value('dcterms:description'); ?>
                     <?php if ($desc): ?>
-                    <p><?php echo $escape($desc); ?></p>
+                    <p><?php echo $escape(mb_substr($desc, 0, 150) . (mb_strlen($desc) > 150 ? '…' : '')); ?></p>
                     <?php endif; ?>
                 </div>
             </a>
