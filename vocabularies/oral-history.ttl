@@ -1,0 +1,34 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix oralhistory: <http://rrchnm.org/vocab/oral-history#> .
+
+<http://rrchnm.org/vocab/oral-history#>
+    a owl:Ontology ;
+    rdfs:label "Oral History Vocabulary" ;
+    rdfs:comment "A vocabulary for describing oral history interviews, including transcripts and recording metadata." .
+
+oralhistory:transcript
+    a rdf:Property ;
+    rdfs:label "Transcript" ;
+    rdfs:comment "Full text of the interview transcript. May include timestamps in [HH:MM:SS] format for synchronization with audio." .
+
+oralhistory:transcriptStatus
+    a rdf:Property ;
+    rdfs:label "Transcript Status" ;
+    rdfs:comment "Current status of the transcript (e.g. draft, reviewed, final)." .
+
+oralhistory:transcriber
+    a rdf:Property ;
+    rdfs:label "Transcriber" ;
+    rdfs:comment "Person or service responsible for producing the transcript." .
+
+oralhistory:interviewLocation
+    a rdf:Property ;
+    rdfs:label "Interview Location" ;
+    rdfs:comment "Place where the interview was conducted." .
+
+oralhistory:seriesTitle
+    a rdf:Property ;
+    rdfs:label "Series Title" ;
+    rdfs:comment "Title of the oral history series or project this interview belongs to." .

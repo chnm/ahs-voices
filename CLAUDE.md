@@ -64,8 +64,31 @@ Single stylesheet at `theme/asset/css/style.css` with CSS custom properties for 
 
 ## Installed Modules
 
-FacetedBrowse, OhmsEmbed, AdvancedSearch, BulkImport, BulkExport, BulkEdit, EasyAdmin, ActivityLog, ApiInfo, BotChallenge, Coins. Activate in Admin > Modules.
+Module zip files live in `plugins/` and are auto-installed on container startup via `docker/omeka-s/install-modules.sh`. Current modules: FacetedBrowse, AdvancedSearch, ActivityLog, GoogleAnalytics, Statistics, UniversalViewer. Activate in Admin > Modules after first install.
+
+## Custom Vocabulary: Oral History
+
+The file `vocabularies/oral-history.ttl` defines the `oralhistory` vocabulary with properties for transcript handling. To install (one-time, via admin):
+
+1. Go to Admin > Vocabularies > Import new vocabulary
+2. **Label:** Oral History
+3. **Namespace URI:** `http://rrchnm.org/vocab/oral-history#`
+4. **Namespace prefix:** `oralhistory`
+5. **Vocabulary file:** upload `vocabularies/oral-history.ttl`
+
+Properties defined:
+- `oralhistory:transcript` — full interview transcript text, may include `[HH:MM:SS]` timestamps for audio sync
+- `oralhistory:transcriptStatus` — draft / reviewed / final
+- `oralhistory:transcriber` — person or service that produced the transcript
+- `oralhistory:interviewLocation` — where the interview was conducted
+- `oralhistory:seriesTitle` — oral history series or project name
+
+After import, add these properties to the "Oral History Interview" resource template as needed.
 
 ## Sample Data
 
-`seed.py` creates 6 item sets and 8 interview items with Dublin Core metadata. It reads `OMEKA_KEY_IDENTITY` and `OMEKA_KEY_CREDENTIAL` from `.env`. Site ID is 1, slug is `ahs-oral-history`. McGrath item (ID 14) has a dummy audio file and transcript for testing.
+`seed.py` creates a resource template ("Oral History Interview"), 6 item sets, and 8 interview items with Dublin Core metadata and picsum placeholder thumbnails. It reads `OMEKA_KEY_IDENTITY` and `OMEKA_KEY_CREDENTIAL` from `.env`. Use `--template-only` to create just the resource template without sample data.
+
+- **Site slug:** `arlington-voices`
+- **Full seed:** `python3 seed.py`
+- **Template only:** `python3 seed.py --template-only`
