@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
-"""Seed Omeka S with sample oral history data from the prototype.
+"""Seed Omeka S with sample oral history data and resource templates.
 
 Usage:
-    python3 seed.py KEY_IDENTITY KEY_CREDENTIAL
+    python3 seed.py                  # seed everything (template + data)
+    python3 seed.py --template-only  # only create the resource template
 
-Create an API key in Omeka admin: User > API Keys > New key.
+API keys are read from .env or passed as arguments:
+    python3 seed.py KEY_IDENTITY KEY_CREDENTIAL
 """
 
 import json
@@ -12,6 +14,10 @@ import os
 import sys
 import urllib.request
 import urllib.parse
+
+TEMPLATE_ONLY = "--template-only" in sys.argv
+if TEMPLATE_ONLY:
+    sys.argv.remove("--template-only")
 
 API = "http://localhost:8080/api"
 
@@ -100,6 +106,31 @@ def prop_id(term):
     return pid
 
 
+# ---------- Create Resource Template ----------
+
+print("\nCreating resource template...")
+template_data = {
+    "o:label": "Oral History Interview",
+    "o:resource_template_property": [
+        {"o:property": {"o:id": prop_id("dcterms:title")}, "o:alternate_label": "Interviewee Name", "o:alternate_comment": "Full name of the person interviewed", "o:is_required": True, "o:data_type": []},
+        {"o:property": {"o:id": prop_id("dcterms:description")}, "o:alternate_label": "Summary", "o:alternate_comment": "Brief description of the interview content", "o:is_required": True, "o:data_type": []},
+        {"o:property": {"o:id": prop_id("dcterms:date")}, "o:alternate_label": "Life Dates", "o:alternate_comment": "Birth and death years of the interviewee (e.g. 1920\u20132015 or b. 1958)", "o:is_required": False, "o:data_type": []},
+        {"o:property": {"o:id": prop_id("dcterms:created")}, "o:alternate_label": "Date Recorded", "o:alternate_comment": "Date the interview was recorded", "o:is_required": True, "o:data_type": []},
+        {"o:property": {"o:id": prop_id("dcterms:subject")}, "o:alternate_label": "Topics", "o:alternate_comment": "Subject keywords (add multiple values)", "o:is_required": False, "o:data_type": []},
+        {"o:property": {"o:id": prop_id("dcterms:contributor")}, "o:alternate_label": "Interviewer", "o:alternate_comment": "Name of the interviewer (e.g. Interviewed by Margaret Chen)", "o:is_required": False, "o:data_type": []},
+        {"o:property": {"o:id": prop_id("dcterms:extent")}, "o:alternate_label": "Duration", "o:alternate_comment": "Length of the interview recording (e.g. 1:42:18)", "o:is_required": False, "o:data_type": []},
+        {"o:property": {"o:id": prop_id("dcterms:spatial")}, "o:alternate_label": "Neighborhood", "o:alternate_comment": "Arlington neighborhood associated with the interviewee", "o:is_required": False, "o:data_type": []},
+    ],
+}
+template_resp = api_post("resource_templates", template_data)
+template_id = template_resp["o:id"]
+print(f"  Created resource template: Oral History Interview (ID: {template_id})")
+
+if TEMPLATE_ONLY:
+    print("\nDone! Template created. Use without --template-only to also seed sample data.")
+    sys.exit(0)
+
+
 # ---------- Create Item Sets ----------
 
 print("\nCreating item sets...")
@@ -132,6 +163,7 @@ for i in interviews:
         "dcterms:contributor": [{"type": "literal", "property_id": prop_id("dcterms:contributor"), "@value": f"Interviewed by {i['interviewer']}"}],
         "dcterms:extent": [{"type": "literal", "property_id": prop_id("dcterms:extent"), "@value": i["length"]}],
         "o:item_set": [{"o:id": set_ids[i["collection"]]}],
+        "o:resource_template": {"o:id": template_id},
         "o:is_public": True,
     }
     # Add spatial if the property exists
