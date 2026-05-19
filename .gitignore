@@ -4,3 +4,6 @@
 *~
 .env
 node_modules/
+prototype/
+_oralhistories/
+.claude/

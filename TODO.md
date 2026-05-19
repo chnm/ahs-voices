@@ -1,129 +1,69 @@
 # AHS Oral History Theme — TODO
 
-## Setup & Scaffolding
+## Completed
 
-- [x] Set up Omeka S dev environment (Docker: nginx + PHP-FPM + MariaDB)
-- [x] Scaffold theme directory structure (`config/theme.ini`, `view/`, `asset/`)
-- [x] Create `config/theme.ini` with metadata and theme settings
+- [x] Docker dev environment (nginx + PHP-FPM + MariaDB)
+- [x] Theme scaffolding and CSS design tokens
+- [x] Shared chrome: pre-header, header (logo + divider + wordmark), footer
+- [x] Configurable theme settings (logo, subtitle, hero headline, footer description, nav depth)
+- [x] Site title pulled from admin (not hardcoded)
+- [x] Pre-header links wired to AHS website
+- [x] Homepage: hero with random item image + fallback historical photos, summary from site settings, recent items, collections grid
+- [x] Admin page blocks rendered between hero and recent items on homepage
+- [x] Browse interviews page with metadata, tags, truncated descriptions
+- [x] Item set browse with card grid
+- [x] Single interview page: two-column layout (transcript left, metadata sidebar right)
+- [x] Audio/video player (sticky) with transcript sync (clickable [HH:MM:SS] timestamps)
+- [x] Citation generator (Chicago/MLA/APA with copy to clipboard)
+- [x] Child page navigation (auto-detected from nav tree, rendered as cards)
+- [x] Faceted browse template override and styling
+- [x] Custom oral history vocabulary (transcript, transcriptStatus, transcriber, interviewLocation, seriesTitle)
+- [x] Resource template: "Oral History Interview" (created via seed script)
+- [x] Seed script with --template-only flag
+- [x] Automatic module installation from plugins/ on container startup
+- [x] Transcript parser script (scripts/parse-transcript.py) for docx imports
+- [x] Two real interviews loaded (Pelton & Whipple) with audio and transcripts
+- [x] Description truncation on all browse/card views
+- [x] DEVNOTES.md with full setup and workflow documentation
+
+## In Progress / Next
+
+- [ ] Clean up transcript parser output (speaker attribution drift in multi-paragraph turns)
+- [ ] Ask transcribers to provide plain text format going forward
+- [ ] Import oral history vocabulary in admin (one-time step, see DEVNOTES)
+
+## Theme & Styling
+
+- [ ] Mobile responsive nav (hamburger toggle JS)
+- [ ] Mobile breakpoint testing (sidebar collapse, hero stacking)
 - [ ] Add `theme.jpg` screenshot for admin UI
-- [ ] Initialize git repo
+- [ ] Transcript search box with debounced filtering and `<mark>` highlighting
+- [ ] Auto-scroll active transcript segment into view during playback
+- [ ] Style the search/advanced search pages
 
-## CSS & Design Tokens
+## Content & Data
 
-- [x] Create `asset/css/style.css` with CSS custom properties (all design tokens)
-- [x] Load Google Fonts (Bitter, Inter, JetBrains Mono)
-- [x] Implement type scale, spacing, and geometry variables
-- [x] Base reset / normalize styles
+- [ ] Delete old dummy item sets (MA-themed) from admin
+- [ ] Receive and upload remaining interview audio + transcripts from AHS
+- [ ] Receive narrator portraits / photos
+- [ ] Configure item sets for real collections (beyond Project Shirlington)
 
-## Shared Chrome (`layout.phtml`)
+## Modules
 
-- [x] Master layout template with `<head>`, asset loading, content slot
-- [x] Skip-to-main-content link
-- [x] Pre-header strip (navy, mono, AHS links)
-- [x] Header bar (logomark SVG, wordmark, navigation, active state)
-- [x] Footer (navy, peach top-border, 4-column grid, copyright)
-- [ ] Mobile responsive nav (hamburger/accordion — CSS breakpoints exist, JS toggle needed)
-
-## Pages
-
-### Home (`page/show.phtml` homepage + `index/index.phtml` fallback)
-- [x] Hero section (navy bg, headline, CTA buttons)
-- [ ] Hero rotating photo (currently placeholder)
-- [ ] Featured interview section (portrait, pull quote, link)
-- [x] Recently added grid (4-column cards via Omeka API)
-- [x] Item set grid (3x2, `accentSoft` cards with crimson top-rule via Omeka API)
-
-### Browse Interviews (`item/browse.phtml`)
-- [x] Subpage hero (navy)
-- [ ] Filter sidebar (item set, decade, topic, neighborhood) — placeholder, needs FacetedBrowse
-- [x] Results list with sort dropdown (via Omeka core)
-- [x] Result row layout (thumb, name, summary, meta, tags)
-
-### Single Interview (`item/show.phtml`)
-- [x] Breadcrumb strip
-- [x] Interview hero (portrait, H1, meta strip)
-- [x] Two-column layout (main + sidebar)
-- [x] Audio playback (via Omeka media embeds)
-- [ ] Custom audio player (sticky, navy bg, scrubber, speed selector) — currently using Omeka default
-- [ ] Transcript display with synced highlighting (depends on OHMS/Transcript module)
-- [ ] Transcript search box with debounced filtering
-- [x] Sidebar: topics, interviewer, collection links
-- [x] Sidebar: citation generator (Chicago/MLA/APA tabs, copy button) — working
-- [ ] Sidebar: related interviews
-- [ ] Sidebar: download links
-
-### Item Sets (`item-set/browse.phtml`)
-- [x] Subpage hero
-- [x] 2-column card grid (`accentSoft` bg)
-
-### Single Item Set (`item-set/show.phtml`)
-- [x] Subpage hero with item set metadata
-- [ ] Interview list (needs testing — template exists but may need Omeka query work)
-
-### Search (FacetedBrowse overrides)
-- [ ] Override FacetedBrowse templates to match design
-- [ ] Search hero with input and suggested searches
-- [ ] Faceted sidebar
-- [ ] Result rows with transcript snippet highlights
-
-### Exhibits
-- [ ] Exhibit browse page (hero + exhibit rows)
-- [ ] Single exhibit page
-
-### About (site page)
-- [x] Editorial layout styles (720px max-width, slab headlines, serif body)
-- [x] Subpage hero rendering
-
-## JavaScript
-
-- [ ] Transcript player (`asset/js/transcript-player.js`)
-  - [ ] Synced highlighting on `timeupdate`
-  - [ ] Click-to-seek on transcript segments
-  - [ ] Auto-scroll active segment into view
-  - [ ] Transcript search with debounce + `<mark>` highlighting
-  - [ ] Playback speed selector
-- [x] Citation generator (copy to clipboard, format switching, real metadata)
-- [ ] Hero photo rotation (6s interval, crossfade, `prefers-reduced-motion`)
-- [ ] Item set card hover animation
-- [ ] Mobile nav toggle
-
-## Modules & Integration
-
-- [x] Install FacetedBrowse, OhmsEmbed, AdvancedSearch, and other modules
-  - [ ] Configure FacetedBrowse: set up facets (item set, decade, topic, neighborhood)
-  - [ ] Configure OhmsEmbed (or Transcript module) — determine OHMS vs WebVTT workflow with AHS
-  - [ ] Override module templates to match theme design
-- [ ] Install Numeric Data Types (for date facets) — not in current module set
-- [ ] Set up exhibit module — not in current module set
-- [ ] Create "Oral History Interview" resource template in admin
-
-## Sample Data
-
-- [x] Seed script (`seed.py`) populates 6 item sets and 8 interview items
-- [x] Item sets assigned to site
-- [x] Site navigation configured (Home, Browse Interviews, Collections, About)
-- [x] Dummy audio + transcript on McGrath item for testing
-
-## Content & Assets
-
-- [ ] Receive logo files from AHS (or finalize prototype SVG logomark)
-- [ ] Receive hero photography
-- [ ] Receive sample interview audio (MP3) and transcripts
-- [ ] Receive narrator portraits (or implement SVG fallback from prototype)
+- [ ] Configure FacetedBrowse: set up facets (item set, topic, neighborhood)
+- [ ] Evaluate whether to keep FacetedBrowse or use simpler browse filtering
+- [ ] Decide on exhibit module (if exhibits are needed)
 
 ## Accessibility & QA
 
-- [ ] WCAG 2.1 AA audit (axe DevTools or similar)
-- [ ] Keyboard navigation testing (all pages, transcript player, citation generator)
-- [ ] Screen reader testing (transcript segments as `<button>`s, ARIA labels on player)
-- [ ] Color contrast verification on all surface/ink combinations
-- [ ] Mobile breakpoint testing (collapse sidebar at ~768px, stack interview hero)
+- [ ] WCAG 2.1 AA audit
+- [ ] Keyboard navigation testing (transcript player, citation generator, nav)
+- [ ] Screen reader testing
+- [ ] Color contrast verification
 - [ ] Cross-browser testing (Chrome, Firefox, Safari)
 
 ## Open Questions
 
-- [ ] Confirm hosting environment with AHS
-- [ ] Confirm audio format and transcript authoring workflow (OHMS vs WebVTT)
-- [ ] Confirm logomark decision
-- [ ] Confirm exhibit module choice for Omeka S
-- [ ] Determine if AdvancedSearch Common module dependency is needed
+- [ ] Confirm hosting environment with AHS (Reclaim, self-hosted, etc.)
+- [ ] Confirm transcript workflow: plain text preferred, docx parser available as fallback
+- [ ] Determine if Cleveland Voices player component is worth integrating

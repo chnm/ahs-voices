@@ -13,11 +13,11 @@ docker compose up -d        # starts nginx (8080) + omeka-s (PHP-FPM) + mariadb
 python3 seed.py             # populates sample data (reads API keys from .env)
 ```
 
-- **Site URL:** http://localhost:8080/s/ahs-oral-history
+- **Site URL:** http://localhost:8080/s/arlington-voices
 - **Admin:** http://localhost:8080/admin
 - Theme is bind-mounted (`./theme:/var/www/html/themes/ahs`) — edits are live on refresh, no restart needed.
 - `APPLICATION_ENV=development` is set in nginx fastcgi_params for full error output.
-- Modules live in a Docker volume (not the repo). After `docker compose down -v`, modules must be re-installed from zip files.
+- Modules live in `plugins/` as zip files and are auto-installed on container startup. After `docker compose down -v`, modules are re-installed automatically on next `up`.
 
 ## Architecture
 
@@ -33,8 +33,9 @@ Omeka S checks `themes/ahs/view/` first, then falls back to `application/view/`.
 
 - `view/layout/layout.phtml` — master layout wrapping all pages (pre-header, header nav, footer)
 - `view/omeka/site/page/show.phtml` — renders site pages; detects homepage via `$site->homepage()` to show custom home layout vs standard editorial layout
-- `view/omeka/site/item/show.phtml` — single interview page (breadcrumb, hero, media, citation generator sidebar)
+- `view/omeka/site/item/show.phtml` — single interview page (breadcrumb, hero, transcript + audio left, metadata/citation sidebar right)
 - `view/omeka/site/item/browse.phtml` — browse interviews with result rows and metadata
+- `view/faceted-browse/site/page/page.phtml` — theme override for FacetedBrowse module
 - `view/omeka/site/item-set/browse.phtml` — collections grid with `accentSoft` cards
 - `view/omeka/site/index/index.phtml` — fallback homepage when no site pages exist
 - `view/common/theme-config.phtml` — required partial (can be empty, but must exist)
@@ -49,7 +50,7 @@ Single stylesheet at `theme/asset/css/style.css` with CSS custom properties for 
 
 ### JavaScript
 
-`theme/asset/js/transcript-player.js` handles the citation generator (working) and will handle transcript sync (stub). It reads item metadata from a `data-citation` JSON attribute on the `#citation-generator` element.
+`theme/asset/js/transcript-player.js` handles the citation generator and transcript sync. It parses `[HH:MM:SS]` timestamps in transcript text into clickable links that seek the audio/video player, and highlights the active timestamp during playback. Citation metadata is read from a `data-citation` JSON attribute on the `#citation-generator` element.
 
 ## Omeka S Conventions & Gotchas
 
@@ -59,7 +60,9 @@ Single stylesheet at `theme/asset/css/style.css` with CSS custom properties for 
 - **Navigation renders as `<ul class="navigation">`** — not a custom ID. Style with `#top-nav ul.navigation`.
 - **Item sets must be assigned to a site** to appear in `site_id` queries — this is an admin step, not automatic.
 - **Dublin Core properties** are referenced by term (e.g., `dcterms:title`, `dcterms:subject`). Use `$item->value('dcterms:subject', ['all' => true])` for repeatable values.
+- **`$item->thumbnail()` only returns manually-set thumbnails** — use `$item->primaryMedia()->hasThumbnails()` to check for auto-generated thumbnails from uploaded media.
 - **Media uploads via API** require multipart form data with `file_index: 0` in the JSON payload.
+- **m4a audio files** are detected as `video/mp4` by Omeka — the JS transcript sync checks for both `audio` and `video` elements.
 - **Contrast rule:** text on `--paper-alt` (navy #0E1B2C) must use `--paper-alt-ink` (parchment), `--paper-alt-ink-soft`, or `--paper-alt-brand` — never `--ink` or `--brand` (navy/crimson on navy is invisible).
 
 ## Installed Modules
