@@ -8,8 +8,8 @@ ENV OMEKA_VERSION=4.2.0
 
 WORKDIR /var/www/html
 RUN apk add --update-cache --virtual build-dependencies \
-    unzip \
     wget \
+    && apk add unzip \
     && wget https://github.com/omeka/omeka-s/releases/download/v${OMEKA_VERSION}/omeka-s-${OMEKA_VERSION}.zip \
     && unzip omeka-s-${OMEKA_VERSION}.zip \
     && mv omeka-s/* . \
@@ -32,8 +32,14 @@ RUN apk add \
 # instead, OMEKA_DB_CONNECTION_URL will be set during startup.
 RUN rm config/database.ini
 
-# Make sure /var/www/html/files is owned by www-data.
-# Run as www-data.
+# Make sure /var/www/html/files and modules are owned by www-data.
 RUN mkdir -p /var/www/html/files \
     && chown -R www-data:www-data /var/www/html
+
+COPY install-modules.sh /usr/local/bin/install-modules.sh
+
+# Run as www-data.
 USER www-data
+
+ENTRYPOINT ["install-modules.sh"]
+CMD ["php-fpm"]

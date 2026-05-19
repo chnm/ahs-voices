@@ -20,6 +20,8 @@ services:
       - ./docker/omeka-s/local.config.php:/var/www/html/config/local.config.php
       # Bind-mount theme for live development
       - ./theme:/var/www/html/themes/ahs
+      # Module zip files for install via admin
+      - ./plugins:/srv/plugins
     environment:
       - OMEKA_DB_CONNECTION_URL
     depends_on:
