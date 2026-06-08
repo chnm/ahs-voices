@@ -33,9 +33,22 @@ $itemSets = $api->search('item_sets', ['site_id' => $site->id(), 'limit' => 6])-
             <?php if ($summary): ?>
             <p class="body-large"><?php echo $escape($summary); ?></p>
             <?php endif; ?>
+            <?php
+            $btn1Text = $this->themeSetting('hero_button1_text');
+            $btn1Url = $this->themeSetting('hero_button1_url') ?: $this->url('site/resource', ['controller' => 'item', 'action' => 'browse'], true);
+            $btn2Text = $this->themeSetting('hero_button2_text');
+            $btn2Url = $this->themeSetting('hero_button2_url');
+            if ($btn1Text || $btn2Text):
+            ?>
             <div class="hero-buttons">
-                <a href="<?php echo $this->url('site/resource', ['controller' => 'item', 'action' => 'browse'], true); ?>" class="btn btn-primary"><?php echo $translate('Browse interviews'); ?></a>
+                <?php if ($btn1Text): ?>
+                <a href="<?php echo $escape($btn1Url); ?>" class="btn btn-primary"><?php echo $escape($btn1Text); ?> →</a>
+                <?php endif; ?>
+                <?php if ($btn2Text && $btn2Url): ?>
+                <a href="<?php echo $escape($btn2Url); ?>" class="btn btn-ghost"><?php echo $escape($btn2Text); ?></a>
+                <?php endif; ?>
             </div>
+            <?php endif; ?>
         </div>
         <div class="hero-image">
             <?php
