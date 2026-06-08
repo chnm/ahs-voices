@@ -63,7 +63,7 @@ Single stylesheet at `theme/asset/css/style.css` with CSS custom properties for 
 - **`$item->thumbnail()` only returns manually-set thumbnails** — use `$item->primaryMedia()->hasThumbnails()` to check for auto-generated thumbnails from uploaded media.
 - **Media uploads via API** require multipart form data with `file_index: 0` in the JSON payload.
 - **m4a audio files** are detected as `video/mp4` by Omeka — the JS transcript sync checks for both `audio` and `video` elements.
-- **Contrast rule:** text on `--paper-alt` (navy #0E1B2C) must use `--paper-alt-ink` (parchment), `--paper-alt-ink-soft`, or `--paper-alt-brand` — never `--ink` or `--brand` (navy/crimson on navy is invisible).
+- **Contrast rule:** text on `--paper-alt` (navy #0E1B2C) must use `--paper-alt-ink` (white), `--paper-alt-ink-soft` (cool grey), or `--paper-alt-brand` (light sage) — never `--ink` or `--brand` (dark on dark is invisible).
 
 ## Installed Modules
 
