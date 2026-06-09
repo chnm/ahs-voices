@@ -3,6 +3,7 @@ $translate = $this->plugin('translate');
 $escape = $this->plugin('escapeHtml');
 $thumbnail = $this->plugin('thumbnail');
 $this->headLink()->appendStylesheet($this->assetUrl('css/resource-page-blocks.css', 'Omeka'));
+$this->headScript()->appendFile($this->assetUrl('js/transcript-player.js'));
 $this->htmlElement('body')->appendAttribute('class', 'item resource show');
 
 $filterLocale = (bool) $this->siteSetting('filter_locale_values');
@@ -10,7 +11,6 @@ $lang = $this->lang();
 $valueLang = $filterLocale ? [$lang, ''] : null;
 $title = $item->displayTitle(null, $valueLang);
 
-$this->headScript()->appendFile($this->assetUrl('js/transcript-player.js'));
 ?>
 
 <!-- Breadcrumb -->
@@ -32,15 +32,30 @@ $this->headScript()->appendFile($this->assetUrl('js/transcript-player.js'));
     </div>
 </nav>
 
+<?php
+// Find portrait image and separate from audio/video
+$portraitMedia = null;
+$avMedia = [];
+foreach ($item->media() as $m) {
+    $mType = $m->mediaType();
+    if (!$portraitMedia && $mType && strpos($mType, 'image') === 0 && $m->hasThumbnails()) {
+        $portraitMedia = $m;
+    } elseif ($mType && (strpos($mType, 'audio') === 0 || strpos($mType, 'video') === 0)) {
+        $avMedia[] = $m;
+    }
+}
+?>
+
 <!-- Interview Hero -->
 <section class="section" style="padding-bottom: 0;">
     <div class="container">
         <div class="interview-hero">
-            <?php if ($item->thumbnail()): ?>
-                <?php echo $thumbnail($item, 'large', ['class' => 'interview-portrait', 'alt' => $escape($title)]); ?>
+            <?php if ($portraitMedia): ?>
+            <div class="interview-portrait">
+                <?php echo $thumbnail($portraitMedia, 'medium'); ?>
+            </div>
             <?php endif; ?>
             <div>
-                <h1><?php echo $escape($title); ?></h1>
                 <?php
                 $sets = $item->itemSets();
                 if (count($sets)):
@@ -48,13 +63,12 @@ $this->headScript()->appendFile($this->assetUrl('js/transcript-player.js'));
                 ?>
                 <div class="kicker" style="margin-bottom: 8px;"><?php echo $escape($firstSet->displayTitle()); ?></div>
                 <?php endif; ?>
+                <h1><?php echo $escape($title); ?></h1>
                 <div class="meta">
                     <?php
                     $parts = [];
-                    $created = $item->value('dcterms:created', ['lang' => $valueLang]);
-                    if ($created) $parts[] = 'Recorded ' . $escape($created);
-                    $extent = $item->value('dcterms:extent', ['lang' => $valueLang]);
-                    if ($extent) $parts[] = $escape($extent);
+                    $date = $item->value('dcterms:date', ['lang' => $valueLang]);
+                    if ($date) $parts[] = $escape($date);
                     $spatial = $item->value('dcterms:spatial', ['lang' => $valueLang]);
                     if ($spatial) $parts[] = $escape($spatial);
                     echo implode(' · ', $parts);
@@ -77,14 +91,9 @@ $this->headScript()->appendFile($this->assetUrl('js/transcript-player.js'));
             <div class="interview-main">
                 <?php $this->trigger('view.show.before'); ?>
 
-                <!-- Media embeds -->
-                <?php
-                $medias = $item->media();
-                foreach ($medias as $media):
-                    $mediaType = $media->mediaType();
-                    $isAV = $mediaType && (strpos($mediaType, 'audio') === 0 || strpos($mediaType, 'video') === 0);
-                ?>
-                <div class="<?php echo $isAV ? 'media-player' : 'media-embed'; ?>">
+                <!-- Audio/video player -->
+                <?php foreach ($avMedia as $media): ?>
+                <div class="media-player">
                     <?php echo $media->render(); ?>
                 </div>
                 <?php endforeach; ?>
@@ -189,6 +198,17 @@ $this->headScript()->appendFile($this->assetUrl('js/transcript-player.js'));
                     </div>
                 </section>
                 <?php endif; ?>
+
+                <!-- Map -->
+                <?php try {
+                    $mapHtml = $this->partial('common/mapping-resource-map', ['resource' => $item]);
+                    if (trim($mapHtml)):
+                ?>
+                <section class="sidebar-map">
+                    <h4><?php echo $translate('Location'); ?></h4>
+                    <?php echo $mapHtml; ?>
+                </section>
+                <?php endif; } catch (\Exception $e) {} ?>
 
                 <!-- Citation Generator -->
                 <?php

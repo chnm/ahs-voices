@@ -56,12 +56,20 @@ endif;
         <?php foreach ($items as $item):
             $heading = $item->displayTitle(null, $valueLang);
             $body = $item->displayDescription(null, $valueLang);
+            // Find first image media for thumbnail
+            $imageMedia = null;
+            foreach ($item->media() as $m) {
+                $mType = $m->mediaType();
+                if ($mType && strpos($mType, 'image') === 0 && $m->hasThumbnails()) {
+                    $imageMedia = $m;
+                    break;
+                }
+            }
         ?>
         <div class="result-row">
-            <?php $media = $item->primaryMedia(); ?>
-            <?php if ($media && $media->hasThumbnails()): ?>
+            <?php if ($imageMedia): ?>
             <a href="<?php echo $escape($item->siteUrl($site->slug())); ?>">
-                <?php echo $thumbnail($media, 'square', ['class' => 'result-thumb']); ?>
+                <?php echo $thumbnail($imageMedia, 'square', ['class' => 'result-thumb']); ?>
             </a>
             <?php endif; ?>
             <div class="result-body">

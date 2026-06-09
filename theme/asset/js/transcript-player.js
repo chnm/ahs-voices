@@ -1,5 +1,6 @@
 /**
- * AHS Oral History — Transcript Player & Citation Generator
+ * Arlington Stories — Transcript player & citation generator
+ * Loaded only on item/show pages
  */
 
 (function () {
@@ -40,12 +41,10 @@
             });
         }
 
-        // Initial render
         textEl.textContent = formatCitation('chicago', meta);
     }
 
     function formatCitation(format, meta) {
-        // Split "Firstname Lastname" into parts
         var name = meta.name || '';
         var parts = name.split(' ');
         var lastName = parts.length > 1 ? parts[parts.length - 1] : name;
@@ -57,18 +56,15 @@
         var url = meta.url || '';
         var project = meta.project || 'Oral History Project';
 
-        // Parse date for APA/MLA formatting
         var dateObj = date ? new Date(date) : null;
         var year = dateObj && !isNaN(dateObj) ? dateObj.getFullYear() : '';
 
-        // MLA short month
         var mlaMonths = ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May', 'June', 'July', 'Aug.', 'Sept.', 'Oct.', 'Nov.', 'Dec.'];
         var mlaDate = '';
         if (dateObj && !isNaN(dateObj)) {
             mlaDate = dateObj.getDate() + ' ' + mlaMonths[dateObj.getMonth()] + ' ' + dateObj.getFullYear();
         }
 
-        // APA date: (year, Month day)
         var apaMonths = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
         var apaDate = '';
         if (dateObj && !isNaN(dateObj)) {
@@ -77,27 +73,21 @@
 
         switch (format) {
             case 'chicago':
-                // LastName, FirstName. Interview by Interviewer. Project, Date. URL.
                 return (firstName ? lastName + ', ' + firstName : name) + '. '
                     + (interviewer ? 'Interview by ' + interviewer + '. ' : '')
                     + project + (date ? ', ' + date : '') + '. '
                     + url + '.';
-
             case 'mla':
-                // LastName, FirstName. Interview. Project, MLA date, URL.
                 return (firstName ? lastName + ', ' + firstName : name) + '. '
                     + 'Interview. '
                     + project + (mlaDate ? ', ' + mlaDate : '') + ', '
                     + url + '.';
-
             case 'apa':
-                // LastName, F. (Year, Month Day). Interview [Audio recording]. Project. URL
                 return (firstName ? lastName + ', ' + firstInitial : name) + ' '
                     + (apaDate ? '(' + apaDate + '). ' : '')
                     + 'Interview [Audio recording]. '
                     + project + '. '
                     + url;
-
             default:
                 return '';
         }
@@ -117,11 +107,9 @@
         var transcriptEl = document.querySelector('.transcript-text');
         if (!transcriptEl) return;
 
-        // Find the audio/video element on the page
         var audio = document.querySelector('.media-player audio') || document.querySelector('.media-player video');
         if (!audio) return;
 
-        // Parse [HH:MM:SS] timestamps in the transcript and make them clickable
         var html = transcriptEl.innerHTML;
         html = html.replace(/\[(\d{1,2}):(\d{2}):(\d{2})\]/g, function (match, h, m, s) {
             var seconds = parseInt(h) * 3600 + parseInt(m) * 60 + parseInt(s);
@@ -129,7 +117,6 @@
         });
         transcriptEl.innerHTML = html;
 
-        // Click handler for timestamps
         transcriptEl.addEventListener('click', function (e) {
             var link = e.target.closest('.transcript-timestamp');
             if (!link) return;
@@ -139,7 +126,6 @@
             audio.play();
         });
 
-        // Highlight the active transcript segment as audio plays
         var timestamps = transcriptEl.querySelectorAll('.transcript-timestamp');
         if (timestamps.length === 0) return;
 

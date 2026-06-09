@@ -10,6 +10,7 @@ $this->headTitle()->append($this->setting('installation_title', 'Omeka S'));
 $this->headLink()->prependStylesheet($this->assetUrl('css/style.css'));
 $this->headLink()->prependStylesheet($this->assetUrl('css/iconfonts.css', 'Omeka'));
 $this->headLink()->prependStylesheet('https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Cinzel:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+$this->headScript()->appendFile($this->assetUrl('js/main.js'));
 $this->headScript()->prependFile($this->assetUrl('js/global.js', 'Omeka'));
 $this->headScript()->prependFile($this->assetUrl('vendor/jquery/jquery.min.js', 'Omeka'));
 $this->jsTranslate();
@@ -38,7 +39,6 @@ $userBar = $this->userBar();
                 <span>
                     <a href="https://arlhist.org/visit/"><?php echo $translate('Visit AHS'); ?></a>
                     <a href="https://arlhist.org/support/donate/"><?php echo $translate('Donate'); ?></a>
-                    <a href="#"><?php echo $translate('Contribute a story'); ?></a>
                 </span>
             </div>
         </div>
@@ -85,15 +85,13 @@ $userBar = $this->userBar();
             <div class="container">
                 <div class="footer-grid">
                     <div class="footer-col footer-col-brand">
-                        <div class="footer-wordmark">
-                            <span class="footer-wordmark-name"><?php echo $translate('Arlington'); ?></span>
-                            <span class="footer-wordmark-stories"><?php echo $translate('Stories'); ?></span>
-                        </div>
+                        <img class="footer-logo" src="<?php echo $this->assetUrl('img/arlington-stories-logo-light.png'); ?>" alt="Arlington Stories" />
                         <?php $footerDesc = $this->themeSetting('footer_content'); ?>
                         <p style="font-size: 14px; line-height: 1.6;">
                             <?php echo $escape($footerDesc ?: 'An oral history project of the Arlington Historical Society.'); ?>
                         </p>
                     </div>
+                    <div class="footer-col"></div>
                     <div class="footer-col">
                         <h4><?php echo $translate('Explore'); ?></h4>
                         <a href="<?php echo $site->url(); ?>"><?php echo $translate('Home'); ?></a>
@@ -105,13 +103,6 @@ $userBar = $this->userBar();
                         <a href="https://arlhist.org"><?php echo $translate('About AHS'); ?></a>
                         <a href="https://arlhist.org/visit/"><?php echo $translate('Visit Us'); ?></a>
                         <a href="https://arlhist.org/support/donate/"><?php echo $translate('Donate'); ?></a>
-                    </div>
-                    <div class="footer-col">
-                        <h4><?php echo $translate('Project'); ?></h4>
-                        <a href="#"><?php echo $translate('About'); ?></a>
-                        <a href="#"><?php echo $translate('Contribute a story'); ?></a>
-                        <a href="#"><?php echo $translate('Rights & permissions'); ?></a>
-                        <a href="#"><?php echo $translate('Accessibility'); ?></a>
                     </div>
                 </div>
                 <div class="footer-bottom">
