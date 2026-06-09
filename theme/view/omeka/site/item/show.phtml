@@ -199,6 +199,17 @@ foreach ($item->media() as $m) {
                 </section>
                 <?php endif; ?>
 
+                <!-- Map -->
+                <?php try {
+                    $mapHtml = $this->partial('common/mapping-resource-map', ['resource' => $item]);
+                    if (trim($mapHtml)):
+                ?>
+                <section class="sidebar-map">
+                    <h4><?php echo $translate('Location'); ?></h4>
+                    <?php echo $mapHtml; ?>
+                </section>
+                <?php endif; } catch (\Exception $e) {} ?>
+
                 <!-- Citation Generator -->
                 <?php
                 // Build citation metadata for JS
