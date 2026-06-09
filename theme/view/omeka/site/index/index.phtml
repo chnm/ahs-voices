@@ -80,17 +80,21 @@ $itemSets = $api->search('item_sets', ['site_id' => $site->id(), 'limit' => 6])-
             }
             ?>
             <?php foreach ($heroSlides as $i => $slide): ?>
-            <div class="hero-slide <?php echo $i === 0 ? 'active' : ''; ?>">
+            <div class="hero-slide <?php echo $i === 0 ? 'active' : ''; ?>"
+                 data-caption="<?php echo $escape($slide['type'] === 'item' ? $slide['caption'] : ''); ?>"
+                 data-url="<?php echo $escape($slide['type'] === 'item' ? $slide['url'] : ''); ?>">
                 <?php if ($slide['type'] === 'item'): ?>
-                <a href="<?php echo $escape($slide['url']); ?>" class="hero-image-link">
-                    <?php echo $thumbnail($slide['media'], 'large'); ?>
-                    <span class="hero-image-caption"><?php echo $escape($slide['caption']); ?></span>
-                </a>
+                <?php echo $thumbnail($slide['media'], 'large'); ?>
                 <?php else: ?>
                 <img src="<?php echo $slide['src']; ?>" alt="" />
                 <?php endif; ?>
             </div>
             <?php endforeach; ?>
+            <?php if (!empty($heroSlides) && $heroSlides[0]['type'] === 'item'): ?>
+            <a href="<?php echo $escape($heroSlides[0]['url']); ?>" class="hero-image-caption">
+                <?php echo $escape($heroSlides[0]['caption']); ?>
+            </a>
+            <?php endif; ?>
         </div>
     </div>
 </section>

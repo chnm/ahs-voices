@@ -27,6 +27,23 @@
         progressBar.className = 'hero-carousel-progress';
         carousel.appendChild(progressBar);
 
+        // Caption element
+        var caption = carousel.querySelector('.hero-image-caption');
+
+        function updateCaption() {
+            if (!caption) return;
+            var slide = slides[current];
+            var text = slide.getAttribute('data-caption');
+            var url = slide.getAttribute('data-url');
+            if (text) {
+                caption.textContent = text;
+                caption.href = url || '#';
+                caption.style.opacity = '1';
+            } else {
+                caption.style.opacity = '0';
+            }
+        }
+
         function resetProgress() {
             progressBar.classList.remove('running');
             void progressBar.offsetWidth;
@@ -37,6 +54,7 @@
             slides[current].classList.remove('active');
             current = (current + 1) % slides.length;
             slides[current].classList.add('active');
+            updateCaption();
             resetProgress();
         }
 
