@@ -8,6 +8,16 @@ $translate = $this->plugin('translate');
 $escape = $this->plugin('escapeHtml');
 $thumbnail = $this->plugin('thumbnail');
 
+function findItemImageMedia_idx($item) {
+    foreach ($item->media() as $m) {
+        $type = $m->mediaType();
+        if ($type && strpos($type, 'image') === 0 && $m->hasThumbnails()) {
+            return $m;
+        }
+    }
+    return null;
+}
+
 // Fetch recent items
 $api = $this->api();
 $recentItems = $api->search('items', ['sort_by' => 'created', 'sort_order' => 'desc', 'limit' => 4, 'site_id' => $site->id()])->getContent();
@@ -40,32 +50,47 @@ $itemSets = $api->search('item_sets', ['site_id' => $site->id(), 'limit' => 6])-
             </div>
             <?php endif; ?>
         </div>
-        <div class="hero-image">
+        <div class="hero-image hero-carousel">
             <?php
+            $heroSlides = [];
             $allItems = $api->search('items', ['site_id' => $site->id(), 'limit' => 50])->getContent();
-            $withThumbs = array_filter($allItems, function($i) { return $i->primaryMedia() && $i->primaryMedia()->hasThumbnails(); });
-            $heroItem = null;
-            if (!empty($withThumbs)) {
-                $heroItem = $withThumbs[array_rand($withThumbs)];
+            foreach ($allItems as $hi) {
+                $imgMedia = findItemImageMedia_idx($hi);
+                if ($imgMedia) {
+                    $heroSlides[] = [
+                        'type' => 'item',
+                        'url' => $hi->siteUrl($site->slug()),
+                        'caption' => $hi->displayTitle(),
+                        'media' => $imgMedia,
+                    ];
+                }
+            }
+            shuffle($heroSlides);
+            $heroSlides = array_slice($heroSlides, 0, 6);
+            if (empty($heroSlides)) {
+                $fallbackHeroImages = [
+                    'arlingtonhouseearly20thcentlocpublic_720.jpg',
+                    'HenryGray1005SQuinnArlingtonViewClark.jpg',
+                    'QueenCity__1564066687530__w1920.jpg',
+                    'WalkerBrick__1564067733927__w1920.jpg',
+                ];
+                foreach ($fallbackHeroImages as $fb) {
+                    $heroSlides[] = ['type' => 'fallback', 'src' => $this->assetUrl('img/hero/' . $fb)];
+                }
             }
             ?>
-            <?php if ($heroItem): ?>
-            <a href="<?php echo $escape($heroItem->siteUrl($site->slug())); ?>" class="hero-image-link">
-                <?php echo $thumbnail($heroItem->primaryMedia(), 'large'); ?>
-                <span class="hero-image-caption"><?php echo $escape($heroItem->displayTitle()); ?></span>
-            </a>
-            <?php else: ?>
-            <?php
-            $fallbackHeroImages = [
-                'arlingtonhouseearly20thcentlocpublic_720.jpg',
-                'HenryGray1005SQuinnArlingtonViewClark.jpg',
-                'QueenCity__1564066687530__w1920.jpg',
-                'WalkerBrick__1564067733927__w1920.jpg',
-            ];
-            $fallback = $fallbackHeroImages[array_rand($fallbackHeroImages)];
-            ?>
-            <img src="<?php echo $this->assetUrl('img/hero/' . $fallback); ?>" alt="" />
-            <?php endif; ?>
+            <?php foreach ($heroSlides as $i => $slide): ?>
+            <div class="hero-slide <?php echo $i === 0 ? 'active' : ''; ?>">
+                <?php if ($slide['type'] === 'item'): ?>
+                <a href="<?php echo $escape($slide['url']); ?>" class="hero-image-link">
+                    <?php echo $thumbnail($slide['media'], 'large'); ?>
+                    <span class="hero-image-caption"><?php echo $escape($slide['caption']); ?></span>
+                </a>
+                <?php else: ?>
+                <img src="<?php echo $slide['src']; ?>" alt="" />
+                <?php endif; ?>
+            </div>
+            <?php endforeach; ?>
         </div>
     </div>
 </section>
