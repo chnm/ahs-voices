@@ -109,18 +109,40 @@ def prop_id(term):
 # ---------- Create Resource Template ----------
 
 print("\nCreating resource template...")
+template_properties = [
+    {"term": "dcterms:title", "label": "Interviewee Name", "comment": "Full name of the person interviewed", "required": True},
+    {"term": "dcterms:description", "label": "Summary", "comment": "Brief description of the interview content", "required": True},
+    {"term": "dcterms:date", "label": "Life Dates", "comment": "Birth and death years of the interviewee (e.g. 1920\u20132015 or b. 1958)", "required": False},
+    {"term": "dcterms:created", "label": "Date Recorded", "comment": "Date the interview was recorded", "required": True},
+    {"term": "dcterms:subject", "label": "Topics", "comment": "Subject keywords (add multiple values)", "required": False},
+    {"term": "dcterms:contributor", "label": "Interviewer", "comment": "Name of the interviewer (e.g. Interviewed by Margaret Chen)", "required": False},
+    {"term": "dcterms:extent", "label": "Duration", "comment": "Length of the interview recording (e.g. 1:42:18)", "required": False},
+    {"term": "dcterms:spatial", "label": "Neighborhood", "comment": "Arlington neighborhood associated with the interviewee", "required": False},
+    {"term": "oralhistory:transcript", "label": "Transcript", "comment": "Full interview transcript text with [HH:MM:SS] timestamps for audio sync", "required": False},
+    {"term": "oralhistory:transcriptStatus", "label": "Transcript Status", "comment": "Current status: draft, reviewed, or final", "required": False},
+    {"term": "oralhistory:transcriber", "label": "Transcriber", "comment": "Person or service that produced the transcript", "required": False},
+    {"term": "oralhistory:interviewLocation", "label": "Interview Location", "comment": "Where the interview was conducted", "required": False},
+    {"term": "oralhistory:seriesTitle", "label": "Series Title", "comment": "Oral history series or project name", "required": False},
+]
+
+# Build template property list, skipping any properties whose vocabulary isn't imported yet
+template_props_data = []
+for tp in template_properties:
+    pid = prop_id(tp["term"])
+    if pid:
+        template_props_data.append({
+            "o:property": {"o:id": pid},
+            "o:alternate_label": tp["label"],
+            "o:alternate_comment": tp["comment"],
+            "o:is_required": tp["required"],
+            "o:data_type": [],
+        })
+    else:
+        print(f"  NOTE: Skipping '{tp['term']}' — vocabulary not imported yet. Import vocabularies/oral-history.ttl and re-run.")
+
 template_data = {
     "o:label": "Oral History Interview",
-    "o:resource_template_property": [
-        {"o:property": {"o:id": prop_id("dcterms:title")}, "o:alternate_label": "Interviewee Name", "o:alternate_comment": "Full name of the person interviewed", "o:is_required": True, "o:data_type": []},
-        {"o:property": {"o:id": prop_id("dcterms:description")}, "o:alternate_label": "Summary", "o:alternate_comment": "Brief description of the interview content", "o:is_required": True, "o:data_type": []},
-        {"o:property": {"o:id": prop_id("dcterms:date")}, "o:alternate_label": "Life Dates", "o:alternate_comment": "Birth and death years of the interviewee (e.g. 1920\u20132015 or b. 1958)", "o:is_required": False, "o:data_type": []},
-        {"o:property": {"o:id": prop_id("dcterms:created")}, "o:alternate_label": "Date Recorded", "o:alternate_comment": "Date the interview was recorded", "o:is_required": True, "o:data_type": []},
-        {"o:property": {"o:id": prop_id("dcterms:subject")}, "o:alternate_label": "Topics", "o:alternate_comment": "Subject keywords (add multiple values)", "o:is_required": False, "o:data_type": []},
-        {"o:property": {"o:id": prop_id("dcterms:contributor")}, "o:alternate_label": "Interviewer", "o:alternate_comment": "Name of the interviewer (e.g. Interviewed by Margaret Chen)", "o:is_required": False, "o:data_type": []},
-        {"o:property": {"o:id": prop_id("dcterms:extent")}, "o:alternate_label": "Duration", "o:alternate_comment": "Length of the interview recording (e.g. 1:42:18)", "o:is_required": False, "o:data_type": []},
-        {"o:property": {"o:id": prop_id("dcterms:spatial")}, "o:alternate_label": "Neighborhood", "o:alternate_comment": "Arlington neighborhood associated with the interviewee", "o:is_required": False, "o:data_type": []},
-    ],
+    "o:resource_template_property": template_props_data,
 }
 template_resp = api_post("resource_templates", template_data)
 template_id = template_resp["o:id"]
