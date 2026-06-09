@@ -916,10 +916,12 @@ h3 {
 
 .result-thumb {
     width: 80px;
-    height: 80px;
+    min-width: 80px;
+    max-height: 80px;
     border-radius: var(--radius);
     object-fit: cover;
     flex-shrink: 0;
+    aspect-ratio: 1;
 }
 
 .result-body h3 {
