@@ -111,7 +111,8 @@ def prop_id(term):
 print("\nCreating resource template...")
 template_properties = [
     {"term": "dcterms:title", "label": "Interviewee Name", "comment": "Full name of the person interviewed", "required": True},
-    {"term": "dcterms:description", "label": "Summary", "comment": "Brief description of the interview content", "required": True},
+    {"term": "dcterms:abstract", "label": "Lede", "comment": "Short 1-2 sentence preview shown in browse listings. Falls back to Summary if empty.", "required": False},
+    {"term": "dcterms:description", "label": "Summary", "comment": "Full description of the interview content", "required": True},
     {"term": "dcterms:date", "label": "Life Dates", "comment": "Birth and death years of the interviewee (e.g. 1920\u20132015 or b. 1958)", "required": False},
     {"term": "dcterms:created", "label": "Date Recorded", "comment": "Date the interview was recorded", "required": True},
     {"term": "dcterms:subject", "label": "Topics", "comment": "Subject keywords (add multiple values)", "required": False},

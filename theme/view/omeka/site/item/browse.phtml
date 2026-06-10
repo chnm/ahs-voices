@@ -86,8 +86,16 @@ endif;
                     echo implode(' · ', $parts);
                     ?>
                 </div>
-                <?php if ($body): ?>
-                <p><?php echo $escape(mb_substr($body, 0, 200) . (mb_strlen($body) > 200 ? '…' : '')); ?></p>
+                <?php
+                $lede = $item->value('dcterms:abstract', ['lang' => $valueLang]);
+                $preview = $lede ?: $body;
+                ?>
+                <?php if ($preview): ?>
+                <p><?php
+                $previewStr = (string) $preview;
+                $limit = $lede ? 400 : 500;
+                echo $escape(mb_substr($previewStr, 0, $limit) . (mb_strlen($previewStr) > $limit ? '…' : ''));
+                ?></p>
                 <?php endif; ?>
                 <?php
                 $subjects = $item->value('dcterms:subject', ['all' => true, 'lang' => $valueLang]);
