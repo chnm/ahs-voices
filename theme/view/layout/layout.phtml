@@ -33,15 +33,27 @@ $userBar = $this->userBar();
         <?php echo $userBar; ?>
 
         <!-- Pre-header strip -->
+        <?php $preheaderText = $this->themeSetting('preheader_text'); ?>
+        <?php if ($preheaderText): ?>
         <div class="pre-header">
             <div class="container">
-                <span><?php echo $translate('A project of the'); ?> <a href="https://arlhist.org" class="pre-header-highlight"><?php echo $translate('Arlington Historical Society'); ?></a></span>
+                <span><?php echo $escape($preheaderText); ?></span>
                 <span>
-                    <a href="https://arlhist.org/visit/"><?php echo $translate('Visit AHS'); ?></a>
-                    <a href="https://arlhist.org/support/donate/"><?php echo $translate('Donate'); ?></a>
+                    <?php
+                    $preLinks = [
+                        ['text' => $this->themeSetting('preheader_link1_text'), 'url' => $this->themeSetting('preheader_link1_url')],
+                        ['text' => $this->themeSetting('preheader_link2_text'), 'url' => $this->themeSetting('preheader_link2_url')],
+                        ['text' => $this->themeSetting('preheader_link3_text'), 'url' => $this->themeSetting('preheader_link3_url')],
+                    ];
+                    foreach ($preLinks as $link):
+                        if ($link['text'] && $link['url']): ?>
+                    <a href="<?php echo $escape($link['url']); ?>"><?php echo $escape($link['text']); ?></a>
+                    <?php endif;
+                    endforeach; ?>
                 </span>
             </div>
         </div>
+        <?php endif; ?>
 
         <!-- Header -->
         <header class="site-header">
