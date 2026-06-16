@@ -40,76 +40,40 @@ $itemSets = $api->search('item_sets', ['site_id' => $site->id(), 'limit' => 6])-
 <!-- Hero -->
 <section class="hero">
     <div class="container">
-        <div class="hero-content">
-            <h1><?php echo $escape($this->themeSetting('hero_headline') ?: 'The voices of a town, recorded'); ?></h1>
+        <div class="hero-text">
             <?php $summary = $site->summary(); ?>
             <?php if ($summary): ?>
             <p class="body-large"><?php echo $escape($summary); ?></p>
             <?php endif; ?>
-            <?php
-            $btn1Text = $this->themeSetting('hero_button1_text');
-            $btn1Url = $this->themeSetting('hero_button1_url') ?: $this->url('site/resource', ['controller' => 'item', 'action' => 'browse'], true);
-            $btn2Text = $this->themeSetting('hero_button2_text');
-            $btn2Url = $this->themeSetting('hero_button2_url');
-            if ($btn1Text || $btn2Text):
-            ?>
-            <div class="hero-buttons">
-                <?php if ($btn1Text): ?>
-                <a href="<?php echo $escape($btn1Url); ?>" class="btn btn-primary"><?php echo $escape($btn1Text); ?> →</a>
-                <?php endif; ?>
-                <?php if ($btn2Text && $btn2Url): ?>
-                <a href="<?php echo $escape($btn2Url); ?>" class="btn btn-ghost"><?php echo $escape($btn2Text); ?></a>
-                <?php endif; ?>
-            </div>
-            <?php endif; ?>
+            <h1><?php echo $escape($this->themeSetting('hero_headline') ?: 'The voices of a town, recorded'); ?></h1>
         </div>
-        <div class="hero-image hero-carousel">
-            <?php
-            // Collect slides: items with image media, then fallback images
-            $heroSlides = [];
-            $allItems = $api->search('items', ['site_id' => $site->id(), 'limit' => 50])->getContent();
-            foreach ($allItems as $hi) {
-                $imgMedia = findItemImageMedia($hi);
-                if ($imgMedia) {
-                    $heroSlides[] = [
-                        'type' => 'item',
-                        'url' => $hi->siteUrl($site->slug()),
-                        'caption' => $hi->displayTitle(),
-                        'media' => $imgMedia,
-                    ];
-                }
-            }
-            shuffle($heroSlides);
-            $heroSlides = array_slice($heroSlides, 0, 6);
-            if (empty($heroSlides)) {
-                $fallbackHeroImages = [
-                    'arlingtonhouseearly20thcentlocpublic_720.jpg',
-                    'HenryGray1005SQuinnArlingtonViewClark.jpg',
-                    'QueenCity__1564066687530__w1920.jpg',
-                    'WalkerBrick__1564067733927__w1920.jpg',
-                ];
-                foreach ($fallbackHeroImages as $fb) {
-                    $heroSlides[] = ['type' => 'fallback', 'src' => $this->assetUrl('img/hero/' . $fb)];
-                }
-            }
-            ?>
-            <?php foreach ($heroSlides as $i => $slide): ?>
-            <div class="hero-slide <?php echo $i === 0 ? 'active' : ''; ?>"
-                 data-caption="<?php echo $escape($slide['type'] === 'item' ? $slide['caption'] : ''); ?>"
-                 data-url="<?php echo $escape($slide['type'] === 'item' ? $slide['url'] : ''); ?>">
-                <?php if ($slide['type'] === 'item'): ?>
-                <?php echo $thumbnail($slide['media'], 'large'); ?>
-                <?php else: ?>
-                <img src="<?php echo $slide['src']; ?>" alt="" />
+        <?php
+        // Pick 3 random items for hero entry points
+        $allItems = $api->search('items', ['site_id' => $site->id(), 'limit' => 50])->getContent();
+        if (count($allItems) > 3) {
+            $keys = array_rand($allItems, 3);
+            $heroPicks = array_map(function($k) use ($allItems) { return $allItems[$k]; }, $keys);
+        } else {
+            $heroPicks = $allItems;
+        }
+        ?>
+        <?php if (!empty($heroPicks)): ?>
+        <div class="hero-picks">
+            <?php foreach ($heroPicks as $pick): ?>
+            <a href="<?php echo $escape($pick->siteUrl($site->slug())); ?>" class="hero-pick">
+                <?php
+                $sets = $pick->itemSets();
+                if (count($sets)):
+                    $firstSet = current($sets);
+                ?>
+                <div class="kicker"><?php echo $escape($firstSet->displayTitle()); ?></div>
                 <?php endif; ?>
-            </div>
-            <?php endforeach; ?>
-            <?php if (!empty($heroSlides) && $heroSlides[0]['type'] === 'item'): ?>
-            <a href="<?php echo $escape($heroSlides[0]['url']); ?>" class="hero-image-caption">
-                <?php echo $escape($heroSlides[0]['caption']); ?>
+                <h3><?php echo $escape($pick->displayTitle()); ?></h3>
+                <span class="listen-link"><?php echo $translate('Listen'); ?> →</span>
             </a>
-            <?php endif; ?>
+            <?php endforeach; ?>
         </div>
+        <?php endif; ?>
     </div>
 </section>
 
@@ -150,9 +114,15 @@ $itemSets = $api->search('item_sets', ['site_id' => $site->id(), 'limit' => 6])-
                     <div class="kicker"><?php echo $escape($firstSet->displayTitle()); ?></div>
                     <?php endif; ?>
                     <h3><?php echo $escape($item->displayTitle()); ?></h3>
-                    <?php $desc = $item->value('dcterms:description'); ?>
+                    <?php
+                    $lede = $item->value('dcterms:abstract');
+                    $desc = $lede ?: $item->value('dcterms:description');
+                    ?>
                     <?php if ($desc): ?>
-                    <p><?php echo $escape(mb_substr($desc, 0, 150) . (mb_strlen($desc) > 150 ? '…' : '')); ?></p>
+                    <p><?php
+                    $descStr = (string) $desc;
+                    echo $escape(mb_substr($descStr, 0, 200) . (mb_strlen($descStr) > 200 ? '…' : ''));
+                    ?></p>
                     <?php endif; ?>
                 </div>
             </a>

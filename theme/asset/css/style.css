@@ -214,7 +214,7 @@ h3 {
     align-items: center;
     padding-top: 0;
     padding-bottom: 0;
-    min-height: 64px;
+    min-height: 72px;
     position: relative;
 }
 
@@ -238,7 +238,7 @@ h3 {
 }
 
 .site-title .header-logo {
-    height: 52px;
+    height: 64px;
     width: auto;
 }
 
@@ -1320,103 +1320,60 @@ h3 {
     align-items: center;
 }
 
-.hero .kicker {
-    color: var(--paper-alt-brand);
+.hero-text .body-large {
+    color: var(--paper-alt-ink-soft);
+    font-size: 17px;
+    line-height: 1.6;
     margin-bottom: 16px;
 }
 
 .hero h1 {
     color: var(--paper-alt-ink);
+    font-size: 38px;
 }
 
-.hero p {
-    color: var(--paper-alt-ink-soft);
-    font-size: 17px;
-    line-height: 1.6;
-}
-
-.hero-buttons {
+.hero-picks {
     display: flex;
+    flex-direction: column;
     gap: 12px;
-    margin-top: 24px;
 }
 
-.hero-image {
-    position: relative;
-    border-radius: var(--radius);
-    overflow: hidden;
-    aspect-ratio: 4/3;
-}
-
-.hero-carousel {
-    position: relative;
-}
-
-.hero-slide {
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-    transition: opacity 0.6s ease;
-}
-
-.hero-slide.active {
-    position: relative;
-    opacity: 1;
-}
-
-.hero-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.hero-image-link {
+.hero-pick {
     display: block;
-    width: 100%;
-    height: 100%;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius);
+    padding: 20px;
     text-decoration: none;
-    color: inherit;
+    color: var(--paper-alt-ink);
+    transition: background 0.2s ease, border-color 0.2s ease;
 }
 
-.hero-image-caption {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 32px 16px 12px;
-    background: linear-gradient(transparent, rgba(18, 44, 76, 0.8));
-    color: var(--paper-alt-ink);
+.hero-pick:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.hero-pick .kicker {
+    color: var(--paper-alt-brand);
+    margin-bottom: 6px;
+}
+
+.hero-pick h3 {
     font-family: var(--font-display);
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 600;
-    text-decoration: none;
-    z-index: 4;
-    transition: opacity 0.3s ease;
-}
-
-.hero-image-caption:hover {
+    margin: 0 0 8px;
     color: var(--paper-alt-ink);
-    text-decoration: underline;
 }
 
-/* Carousel progress bar */
-.hero-carousel-progress {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    height: 3px;
-    background: var(--brand-fill);
-    z-index: 5;
-    width: 0;
-}
-
-.hero-carousel-progress.running {
-    animation: carousel-progress 6s linear forwards;
-}
-
-@keyframes carousel-progress {
-    from { width: 0; }
-    to { width: 100%; }
+.hero-pick .listen-link {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--paper-alt-brand);
 }
 
 /* ---------- Section Headers ---------- */
@@ -1560,8 +1517,6 @@ h3 {
 /* ---------- About / Editorial ---------- */
 
 .editorial {
-    max-width: 720px;
-    margin: 0 auto;
 }
 
 .editorial h1 {
@@ -1649,23 +1604,6 @@ h3 {
     /* Hero */
     .hero .container {
         grid-template-columns: 1fr;
-    }
-
-    .hero-image {
-        aspect-ratio: 16 / 9;
-    }
-
-    .hero-content h1 {
-        font-size: 28px;
-    }
-
-    .hero-buttons {
-        flex-direction: column;
-    }
-
-    .hero-buttons .btn {
-        text-align: center;
-        justify-content: center;
     }
 
     /* Interview */
