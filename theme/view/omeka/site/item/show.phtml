@@ -76,7 +76,7 @@ foreach ($item->media() as $m) {
                 </div>
                 <?php $desc = $item->value('dcterms:description', ['lang' => $valueLang]); ?>
                 <?php if ($desc): ?>
-                <p class="body-large" style="margin-top: 12px;"><?php echo $escape($desc); ?></p>
+                <div class="body-large" style="margin-top: 12px;"><?php echo nl2br($escape($desc)); ?></div>
                 <?php endif; ?>
             </div>
         </div>
