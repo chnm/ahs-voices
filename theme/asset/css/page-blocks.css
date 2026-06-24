@@ -1,0 +1,66 @@
+/* ==========================================================================
+   Page blocks — styling for admin-authored content blocks (HTML, Asset,
+   Media) as they appear inside the editorial column on site pages and the
+   homepage intro. Loaded by view/omeka/site/page/show.phtml.
+   ========================================================================== */
+
+/* Contain floated blocks so the image can't spill past the editorial text. */
+.editorial .blocks-inner,
+.editorial .blocks {
+    display: flow-root;
+}
+
+/* ---------- Asset / Media blocks floated within intro text ---------- */
+
+/* Float the whole block so paragraphs in the following text block wrap
+   around it. Place the Asset (or Media) block ABOVE the text block in the
+   page editor for the image to sit beside the opening paragraphs. */
+.editorial .block-asset,
+.editorial .block-media {
+    float: right;
+    width: 340px;
+    max-width: 42%;
+    margin: 6px 0 24px 36px;
+}
+
+.editorial .block-asset .assets,
+.editorial .block-asset .asset {
+    margin: 0;
+}
+
+.editorial .block-asset img,
+.editorial .block-media img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: var(--radius);
+    box-shadow: var(--card-shadow);
+}
+
+/* Caption beneath a floated figure. */
+.editorial .block-asset .caption,
+.editorial .block-media .caption {
+    margin-top: 10px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--ink-soft);
+}
+
+/* Optional link title rendered when the asset links to a page. */
+.editorial .block-asset .link-title {
+    display: block;
+    margin-top: 8px;
+    font-weight: 600;
+}
+
+/* ---------- Mobile: stack the image full width above the text ---------- */
+@media (max-width: 700px) {
+    .editorial .block-asset,
+    .editorial .block-media {
+        float: none;
+        width: 100%;
+        max-width: 100%;
+        margin: 0 0 24px;
+    }
+}

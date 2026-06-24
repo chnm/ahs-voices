@@ -1,0 +1,32 @@
+<?php
+/**
+ * Theme override of the core Asset block.
+ * Uses the uncropped "large" thumbnail (core uses the cropped "square")
+ * and wraps each asset in a semantic <figure> so it can be floated and
+ * captioned within editorial text. See page-blocks.css (.editorial .asset).
+ */
+$escape = $this->plugin('escapeHtml');
+?>
+
+<div class="assets">
+  <?php foreach ($attachments as $attachment): ?>
+    <?php $asset = $attachment['asset']; ?>
+    <figure class="asset">
+        <?php $assetImage = ($asset) ? $this->thumbnail($asset, 'large') : ''; ?>
+        <?php $page = (array_key_exists('page', $attachment)) ? $attachment['page'] : null; ?>
+        <?php if ($page): ?>
+            <a href="<?php echo $escape($page->siteUrl()); ?>">
+                <?php echo $assetImage; ?>
+                <?php $altLinkTitle = ($attachment['alt_link_title'] !== '') ? $escape($attachment['alt_link_title']) : false; ?>
+                <span class="link-title"><?php echo ($altLinkTitle) ? $altLinkTitle : $escape($page->title()); ?></span>
+            </a>
+        <?php else: ?>
+            <?php echo $assetImage; ?>
+        <?php endif; ?>
+        <?php $caption = trim((string) $attachment['caption']); ?>
+        <?php if ($caption !== ''): ?>
+        <figcaption class="caption"><?php echo $escape($caption); ?></figcaption>
+        <?php endif; ?>
+    </figure>
+  <?php endforeach; ?>
+</div>
