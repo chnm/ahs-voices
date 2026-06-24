@@ -2057,10 +2057,11 @@ h3 {
     margin-bottom: 0;
 }
 
-/* Map fills the editorial container instead of the module's 80% / centered default */
+/* Map fills the editorial container instead of the module's 80% / centered default.
+   Height is set inline on the element (see browse.phtml) so the map always has a
+   height even if this stylesheet is cached/stale — Leaflet needs a sized container. */
 .mapping-browse-map {
     width: 100%;
-    height: 600px;
     border-radius: var(--radius);
     box-shadow: var(--card-shadow);
     overflow: hidden;
