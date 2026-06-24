@@ -2050,3 +2050,40 @@ h3 {
         padding: 24px;
     }
 }
+
+/* ---------- Mapping browse page ---------- */
+
+.mapping-browse-page .subpage-hero {
+    margin-bottom: 0;
+}
+
+/* Map fills the editorial container instead of the module's 80% / centered default */
+.mapping-browse-map {
+    width: 100%;
+    height: 600px;
+    border-radius: var(--radius);
+    box-shadow: var(--card-shadow);
+    overflow: hidden;
+}
+
+/* Search-the-map form below the map */
+.mapping-browse-page #advanced-search {
+    margin-top: 32px;
+}
+
+.mapping-browse-page #advanced-search button[type="submit"] {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 600;
+    padding: 10px 20px;
+    background: var(--brand);
+    color: var(--brand-ink);
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    margin-top: 16px;
+}
+
+.mapping-browse-page #advanced-search button[type="submit"]:hover {
+    filter: brightness(0.95);
+}

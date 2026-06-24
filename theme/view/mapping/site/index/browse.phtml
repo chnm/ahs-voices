@@ -1,0 +1,59 @@
+<?php
+/**
+ * Theme override of the Mapping module's browse page.
+ * Wraps the Leaflet map in the theme's standard subpage chrome
+ * (navy subpage-hero + .section/.container) so it matches other
+ * site pages, instead of the module's bare, full-bleed default.
+ * All module asset loading is preserved verbatim — the map breaks
+ * without it. Mirrors view/faceted-browse/site/page/page.phtml.
+ */
+$escape = $this->plugin('escapeHtml');
+$translate = $this->plugin('translate');
+
+$this->headLink()->appendStylesheet($this->assetUrl('node_modules/leaflet/dist/leaflet.css', 'Mapping'));
+$this->headLink()->appendStylesheet($this->assetUrl('node_modules/leaflet.markercluster/dist/MarkerCluster.css', 'Mapping'));
+$this->headLink()->appendStylesheet($this->assetUrl('node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css', 'Mapping'));
+$this->headLink()->appendStylesheet($this->assetUrl('node_modules/leaflet.fullscreen/Control.FullScreen.css', 'Mapping'));
+$this->headLink()->appendStylesheet($this->assetUrl('css/mapping.css', 'Mapping'));
+
+$this->headScript()->appendFile($this->assetUrl('node_modules/leaflet/dist/leaflet.js', 'Mapping'));
+$this->headScript()->appendFile($this->assetUrl('node_modules/leaflet.markercluster/dist/leaflet.markercluster-src.js', 'Mapping'));
+$this->headScript()->appendFile($this->assetUrl('node_modules/leaflet-providers/leaflet-providers.js', 'Mapping'));
+$this->headScript()->appendFile($this->assetUrl('node_modules/leaflet.fullscreen/Control.FullScreen.js', 'Mapping'));
+$this->headScript()->appendFile($this->assetUrl('node_modules/Leaflet.Deflate/dist/L.Deflate.js', 'Mapping'));
+
+$this->headScript()->appendFile($this->assetUrl('js/MappingModule.js', 'Mapping'));
+$this->headScript()->appendFile($this->assetUrl('js/control.fit-bounds.js', 'Mapping'));
+$this->headScript()->appendFile($this->assetUrl('js/mapping-browse.js', 'Mapping'));
+$this->headScript()->appendFile($this->assetUrl('js/advanced-search.js', 'Omeka'));
+
+$this->htmlElement('body')->appendAttribute('class', 'mapping-browse-page resource browse');
+$this->headTitle($translate('Map'));
+
+$query['mapping_basemap_provider'] = $query['mapping_basemap_provider'] ?? '';
+?>
+
+<section class="subpage-hero">
+    <div class="container">
+        <h1><?php echo $translate('Map'); ?></h1>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <div id="mapping-map" class="mapping-browse-map"
+            data-disable-clustering="<?php echo $this->siteSetting('mapping_disable_clustering') ? '1' : '0'; ?>"
+            data-basemap-provider="<?php echo $this->escapeHtml($this->siteSetting('mapping_basemap_provider')); ?>"
+            data-features-url="<?php echo $this->escapeHtml($this->url('site/mapping', ['controller' => 'index', 'action' => 'get-features'], true)); ?>"
+            data-feature-popup-content-url="<?php echo $this->escapeHtml($this->url('site/mapping', ['controller' => 'index', 'action' => 'get-feature-popup-content'], true)); ?>"
+            data-items-query="<?php echo $this->escapeHtml(json_encode($itemsQuery)); ?>"
+            data-features-query="<?php echo $this->escapeHtml(json_encode($featuresQuery)); ?>">
+        </div>
+
+        <form id="advanced-search" class="mapping-search">
+            <?php echo $this->partial('common/advanced-search', ['query' => $query, 'resourceType' => 'item']); ?>
+            <button type="submit"><?php echo $translate('Search Map'); ?></button>
+            <input type="hidden" name="mapping_basemap_provider" value="<?php echo $this->escapeHtml($query['mapping_basemap_provider']); ?>">
+        </form>
+    </div>
+</section>
