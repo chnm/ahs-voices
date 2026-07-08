@@ -22,7 +22,7 @@ The client provided "a first attempt to identify core requirements." Their vocab
 
 The genuinely buildable requests — they require changes to the theme templates. This is the meat of the work.
 
-- [ ] **Homepage: 3 most recent Collections** — the homepage already has a collections section ("Explore by theme"), but it shows 6 item sets unsorted; change it to the 3 most recent, add the item-set thumbnail to each card, and switch the card text to `dcterms:abstract` (same treatment on the collections grid). If the section looks missing, the likely cause is item sets not being associated with the site (Admin > Sites > `arlington-voices` > **Resources** > **Item Sets** tab — done from the site side, not the item set), not a code bug. ([#34](https://github.com/chnm/ahs-voices/issues/34))
+- [ ] **Homepage: 3 most recent Collections** — the homepage already has a collections section ("Explore by theme"), but it shows 6 item sets unsorted; change it to the 3 most recent and add the item-set thumbnail to each card (card text stays `dcterms:description`; same treatment on the collections grid). If the section looks missing, the likely cause is item sets not being associated with the site (Admin > Sites > `arlington-voices` > **Resources** > **Item Sets** tab — done from the site side, not the item set), not a code bug. ([#34](https://github.com/chnm/ahs-voices/issues/34))
 - [ ] **Story landing page: thumbnail + abstract intro band** — add an intro band between the navy hero and the browse list: item-set thumbnail on the left, `dcterms:abstract` on the right. The hero keeps `dcterms:description` for now (pending client feedback on going title-only). ([#36](https://github.com/chnm/ahs-voices/issues/36))
 
 ## Build later (needs a content model)
@@ -52,4 +52,4 @@ Requested, but deliberately not building.
 
 - **The buildable core is the homepage collections + landing-page work** (#34, #36, and #37 once modeled). Everything else in the client's list is something Omeka already does (admin steps or documentation) or something we've decided not to build (#35).
 - **"Featured" and "Exhibits"** don't exist in Omeka S. The client's request reflects Omeka Classic behavior; see #35 for why we're not reconstituting it.
-- **Field convention** (adopted site-wide): `dcterms:abstract` = short teaser used in cards, browse previews, and landing-page intros; `dcterms:description` = optional long-form prose. Templates showing a short lede prefer abstract with description as fallback. Recorded in CLAUDE.md.
+- **Field convention:** `dcterms:abstract` = short teaser; `dcterms:description` = fuller prose. For item sets, cards show the description and the collection's landing/browse page shows the abstract in its intro band. Recorded in CLAUDE.md.

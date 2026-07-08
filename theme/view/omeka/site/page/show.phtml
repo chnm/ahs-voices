@@ -153,9 +153,9 @@ $itemSets = $api->search('item_sets', ['site_id' => $site->id(), 'sort_by' => 'c
                     <div class="meta"><?php echo $escape($date); ?></div>
                     <?php endif; ?>
                     <h3><?php echo $escape($itemSet->displayTitle()); ?></h3>
-                    <?php $lede = $itemSet->value('dcterms:abstract') ?: $itemSet->value('dcterms:description'); ?>
-                    <?php if ($lede): ?>
-                    <p><?php echo $escape($lede); ?></p>
+                    <?php $desc = $itemSet->value('dcterms:description'); ?>
+                    <?php if ($desc): ?>
+                    <p><?php echo $escape($desc); ?></p>
                     <?php endif; ?>
                 </div>
             </a>
