@@ -45,4 +45,4 @@ The design direction is **"Patriots' Path"** — navy/crimson/parchment palette,
 
 ## Project Status
 
-See [TODO.md](TODO.md) for current status and next steps.
+See [docs/requirements.md](docs/requirements.md) for the requirements roadmap and current status.

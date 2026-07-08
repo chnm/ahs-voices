@@ -34,7 +34,7 @@ $isHomepage = ($homepage && $page->slug() === $homepage->slug());
 // Fetch data for the homepage
 $api = $this->api();
 $recentItems = $api->search('items', ['sort_by' => 'created', 'sort_order' => 'desc', 'limit' => 4, 'site_id' => $site->id()])->getContent();
-$itemSets = $api->search('item_sets', ['site_id' => $site->id(), 'limit' => 6])->getContent();
+$itemSets = $api->search('item_sets', ['site_id' => $site->id(), 'sort_by' => 'created', 'sort_order' => 'desc', 'limit' => 3])->getContent();
 ?>
 
 <!-- Hero -->
@@ -142,7 +142,11 @@ $itemSets = $api->search('item_sets', ['site_id' => $site->id(), 'limit' => 6])-
         </div>
         <div class="grid-3">
             <?php foreach ($itemSets as $itemSet): ?>
+            <?php $setThumbImg = trim($this->partial('common/item-set-thumb', ['itemSet' => $itemSet])); ?>
             <a href="<?php echo $escape($itemSet->siteUrl($site->slug())); ?>" class="card card-item-set">
+                <?php if ($setThumbImg): ?>
+                <div class="card-thumb"><?php echo $setThumbImg; ?></div>
+                <?php endif; ?>
                 <div class="card-body">
                     <?php $date = $itemSet->value('dcterms:date'); ?>
                     <?php if ($date): ?>

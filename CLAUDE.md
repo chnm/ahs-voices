@@ -58,8 +58,11 @@ Single stylesheet at `theme/asset/css/style.css` with CSS custom properties for 
 - **`$site->homepage()` can return null** — always null-check before calling `->slug()`.
 - **`$this->pageTitle()` renders a visible `<h2>`** — use `$this->headTitle()` if you only want the HTML `<title>` tag.
 - **Navigation renders as `<ul class="navigation">`** — not a custom ID. Style with `#top-nav ul.navigation`.
-- **Item sets must be assigned to a site** to appear in `site_id` queries — this is an admin step, not automatic.
+- **Item sets must be associated with a site** to appear in `site_id` queries — done from the site side (Admin > Sites > [site] > **Resources** > **Item Sets** tab), NOT from the item set's own edit page. This is an admin step, not automatic.
+- **A single item-set page (`/item-set/{id}`) is rendered by `item/browse.phtml`** (its `$itemSetShow` branch), NOT `item-set/show.phtml` — AdvancedSearch reroutes item-set viewing to an item browse scoped by `item_set_id`. `item-set/show.phtml` is effectively dead (and its `$itemSet->items()` call is broken: **`ItemSetRepresentation` has no `items()` method** — query items via `$this->api()->search('items', ['item_set_id' => $id])`). `item-set/browse.phtml` still renders the collections *index* (`/item-set`).
+- **Item sets have no media of their own**, so `$itemSet->thumbnail()` returns only a manually-set thumbnail asset. For an auto thumbnail, fall back to a member item's image — see the shared `common/item-set-thumb` partial.
 - **Dublin Core properties** are referenced by term (e.g., `dcterms:title`, `dcterms:subject`). Use `$item->value('dcterms:subject', ['all' => true])` for repeatable values.
+- **Abstract vs. description convention:** `dcterms:abstract` is a short teaser; `dcterms:description` is the fuller prose. For **item sets**, cards (homepage "Explore by theme", collections grid) show the **description**, while the collection's own landing/browse page shows the **abstract** in its intro band. (Item/interview ledes elsewhere may still prefer abstract with description as fallback.)
 - **`$item->thumbnail()` only returns manually-set thumbnails** — use `$item->primaryMedia()->hasThumbnails()` to check for auto-generated thumbnails from uploaded media.
 - **Media uploads via API** require multipart form data with `file_index: 0` in the JSON payload.
 - **m4a audio files** are detected as `video/mp4` by Omeka — the JS transcript sync checks for both `audio` and `video` elements.
