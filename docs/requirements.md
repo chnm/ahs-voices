@@ -22,7 +22,7 @@ The client provided "a first attempt to identify core requirements." Their vocab
 
 The genuinely buildable requests — they require changes to the theme templates. This is the meat of the work.
 
-- [ ] **Homepage: 3 most recent Collections** — the homepage already has a collections section ("Explore by theme"), but it shows 6 item sets unsorted; change it to the 3 most recent, and add a thumbnail to each card. If the section looks missing, the likely cause is item sets not being assigned to the site (an admin step), not a code bug. ([#34](https://github.com/chnm/ahs-voices/issues/34))
+- [ ] **Homepage: 3 most recent Collections** — the homepage already has a collections section ("Explore by theme"), but it shows 6 item sets unsorted; change it to the 3 most recent, and add a thumbnail to each card. If the section looks missing, the likely cause is item sets not being associated with the site (Admin > Sites > `arlington-voices` > **Resources** > **Item Sets** tab — done from the site side, not the item set), not a code bug. ([#34](https://github.com/chnm/ahs-voices/issues/34))
 - [ ] **Story landing pages: thumbnail + description** — surface a thumbnail image and brief description on each Story (item-set) landing page. ([#36](https://github.com/chnm/ahs-voices/issues/36))
 
 ## Build later (needs a content model)

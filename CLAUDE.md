@@ -58,7 +58,7 @@ Single stylesheet at `theme/asset/css/style.css` with CSS custom properties for 
 - **`$site->homepage()` can return null** — always null-check before calling `->slug()`.
 - **`$this->pageTitle()` renders a visible `<h2>`** — use `$this->headTitle()` if you only want the HTML `<title>` tag.
 - **Navigation renders as `<ul class="navigation">`** — not a custom ID. Style with `#top-nav ul.navigation`.
-- **Item sets must be assigned to a site** to appear in `site_id` queries — this is an admin step, not automatic.
+- **Item sets must be associated with a site** to appear in `site_id` queries — done from the site side (Admin > Sites > [site] > **Resources** > **Item Sets** tab), NOT from the item set's own edit page. This is an admin step, not automatic.
 - **Dublin Core properties** are referenced by term (e.g., `dcterms:title`, `dcterms:subject`). Use `$item->value('dcterms:subject', ['all' => true])` for repeatable values.
 - **`$item->thumbnail()` only returns manually-set thumbnails** — use `$item->primaryMedia()->hasThumbnails()` to check for auto-generated thumbnails from uploaded media.
 - **Media uploads via API** require multipart form data with `file_index: 0` in the JSON payload.
