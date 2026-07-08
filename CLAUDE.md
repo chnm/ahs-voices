@@ -60,6 +60,7 @@ Single stylesheet at `theme/asset/css/style.css` with CSS custom properties for 
 - **Navigation renders as `<ul class="navigation">`** — not a custom ID. Style with `#top-nav ul.navigation`.
 - **Item sets must be associated with a site** to appear in `site_id` queries — done from the site side (Admin > Sites > [site] > **Resources** > **Item Sets** tab), NOT from the item set's own edit page. This is an admin step, not automatic.
 - **Dublin Core properties** are referenced by term (e.g., `dcterms:title`, `dcterms:subject`). Use `$item->value('dcterms:subject', ['all' => true])` for repeatable values.
+- **Abstract vs. description convention:** `dcterms:abstract` is the short teaser shown in cards, browse previews, and landing-page intros; `dcterms:description` is the optional long-form prose. When a template shows a short lede, prefer abstract with description as fallback (`$r->value('dcterms:abstract') ?: $r->value('dcterms:description')`).
 - **`$item->thumbnail()` only returns manually-set thumbnails** — use `$item->primaryMedia()->hasThumbnails()` to check for auto-generated thumbnails from uploaded media.
 - **Media uploads via API** require multipart form data with `file_index: 0` in the JSON payload.
 - **m4a audio files** are detected as `video/mp4` by Omeka — the JS transcript sync checks for both `audio` and `video` elements.
