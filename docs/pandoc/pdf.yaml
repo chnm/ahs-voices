@@ -1,0 +1,15 @@
+# Shared pandoc options for the Arlington Stories admin guides.
+# Invoked via: pandoc --defaults=pandoc/pdf.yaml  (run from docs/)
+pdf-engine: xelatex
+from: gfm
+toc-depth: 2
+number-sections: false
+variables:
+  fontsize: 11pt
+  geometry: margin=1in
+  colorlinks: true
+  linkcolor: navy
+  urlcolor: sage
+  toccolor: navy
+include-in-header:
+  - pandoc/header.tex

@@ -29,11 +29,9 @@ Have these ready:
 
 On the **Values** tab you'll see fields for the collection. Fill in these three:
 
-| Field | What it's for |
-|---|---|
-| **Title** | The collection's name. Shows everywhere the collection appears. |
-| **Description** | A short teaser. This is the text shown on the **collection cards** (the homepage "Explore by theme" section and the Collections page). |
-| **Abstract** | A short summary shown on the collection's **own landing page**, next to its picture. |
+- **Title** — the collection's name. Shows everywhere the collection appears.
+- **Description** — a short teaser. This is the text shown on the **collection cards** (the homepage "Explore by theme" section and the Collections page).
+- **Abstract** — a short summary shown on the collection's **own landing page**, next to its picture.
 
 If a field isn't already showing, add it from the property list on the right: open the **Dublin Core** group, then click **Description** or **Abstract** to add it to the form. Type your text in the box that appears.
 

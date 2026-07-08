@@ -20,8 +20,9 @@ GUIDES=(
   managing-collections.md
 )
 
-# Shared pandoc options. --resource-path=. lets images/... paths resolve.
-COMMON=(--pdf-engine=xelatex -f gfm -V geometry:margin=1in -V linkcolor:blue --resource-path=.)
+# Shared pandoc options live in pandoc/pdf.yaml (fonts, colours, layout).
+# --resource-path=. lets images/... paths resolve.
+COMMON=(--defaults=pandoc/pdf.yaml --resource-path=.)
 
 # One PDF per guide.
 for md in "${GUIDES[@]}"; do

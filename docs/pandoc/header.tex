@@ -1,0 +1,52 @@
+% Arlington Stories — PDF styling (xelatex/fontspec).
+% Used by docs/build-pdfs.sh via docs/pandoc/pdf.yaml.
+
+% ---- Fonts (match the site brand where installed) ----
+\usepackage{fontspec}
+\setmainfont{Charter}                       % body: warm print serif
+\setmonofont{JetBrains Mono}[Scale=0.86]    % code: matches the site
+\newfontfamily\headingfont{Inter 24pt}      % headings: matches the site's Inter
+
+% ---- Brand colours (from theme/asset/css/style.css) ----
+\usepackage{xcolor}
+\definecolor{navy}{HTML}{122C4C}     % --ink / --paper-alt
+\definecolor{sage}{HTML}{566142}     % --brand
+\definecolor{inksoft}{HTML}{46556A}  % --ink-soft
+\definecolor{rule}{HTML}{DCD9CE}     % --rule
+\definecolor{codebg}{HTML}{F1EFE8}   % subtle code background
+
+% ---- Headings: Inter, navy ----
+\usepackage{titlesec}
+\titleformat{\section}{\headingfont\LARGE\bfseries\color{navy}}{}{0pt}{}
+\titleformat{\subsection}{\headingfont\Large\bfseries\color{navy}}{}{0pt}{}
+\titleformat{\subsubsection}{\headingfont\large\bfseries\color{sage}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{1.5em}{0.5em}
+\titlespacing*{\subsection}{0pt}{1.2em}{0.4em}
+\titlespacing*{\subsubsection}{0pt}{1.0em}{0.3em}
+
+% ---- Glyphs Charter lacks: map to always-available symbols ----
+\catcode`→=\active
+\protected\def→{\ensuremath{\rightarrow}}
+
+% ---- Body rhythm ----
+\linespread{1.08}
+\setlength{\parskip}{0.55em}
+\setlength{\parindent}{0pt}
+
+% ---- Running header/footer ----
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\footnotesize\headingfont\color{inksoft}\nouppercase{\leftmark}}
+\fancyfoot[C]{\footnotesize\headingfont\color{inksoft}\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% ---- Code blocks: tint the background ----
+\definecolor{shadecolor}{HTML}{F1EFE8}
+
+% ---- Block quotes as callouts: indented and coloured (core LaTeX only) ----
+\renewenvironment{quote}
+  {\begin{list}{}{\setlength{\leftmargin}{1.3em}\setlength{\rightmargin}{0em}}%
+   \item\relax\color{inksoft}}
+  {\end{list}}
