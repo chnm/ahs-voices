@@ -22,7 +22,7 @@ Have these ready:
 1. In the left-hand admin menu, under **Resources**, click **Item sets**.
 2. Click the green **Add new item set** button (top right).
 
-> **📷 Screenshot:** *The Item sets list, with "Item sets" highlighted in the left menu and the "Add new item set" button top-right.*
+> **Screenshot —** *The Item sets list, with "Item sets" highlighted in the left menu and the "Add new item set" button top-right.*
 <!-- image → docs/images/collections/item-sets-list.png -->
 
 ## Step 2: Fill in the details
@@ -37,7 +37,7 @@ On the **Values** tab you'll see fields for the collection. Fill in these three:
 
 If a field isn't already showing, add it from the property list on the right: open the **Dublin Core** group, then click **Description** or **Abstract** to add it to the form. Type your text in the box that appears.
 
-> **📷 Screenshot:** *The Values tab showing the Title, Description, and Abstract fields filled in; the Dublin Core property group open on the right.*
+> **Screenshot —** *The Values tab showing the Title, Description, and Abstract fields filled in; the Dublin Core property group open on the right.*
 <!-- image → docs/images/collections/item-set-values.png -->
 
 > **Description vs. Abstract — why both?** The **description** is the teaser on cards; the **abstract** is the intro on the collection's landing page. They can say similar things. If you only fill in one, fill in the **description** — the cards are the more visible spot.
@@ -48,7 +48,7 @@ If a field isn't already showing, add it from the property list on the right: op
 2. Next to **Thumbnail**, click **Select**.
 3. Upload a new image, or pick one you've used before, then choose it.
 
-> **📷 Screenshot:** *The Advanced tab with the Thumbnail area and the selected image.*
+> **Screenshot —** *The Advanced tab with the Thumbnail area and the selected image.*
 <!-- image → docs/images/collections/item-set-thumbnail.png -->
 
 > **You can skip this.** If you don't set a picture, the site automatically borrows the photo from the first interview in the collection that has one. Set a thumbnail here only when you want a specific image instead.
@@ -78,7 +78,7 @@ Interviews are added to a collection from the **interview's** own page, not here
 4. In the panel on the right, click your collection to add it to the list.
 5. Click **Save**.
 
-> **📷 Screenshot:** *The site's Resources page, Item sets tab, showing the assigned collections list and the "add" panel on the right.*
+> **Screenshot —** *The site's Resources page, Item sets tab, showing the assigned collections list and the "add" panel on the right.*
 <!-- image → docs/images/collections/assign-to-site.png -->
 
 > **If a collection is missing from the site,** this is almost always why: it was created but never added under **Resources → Item sets**. It's done from the **site** side, not from the collection's own edit page.
