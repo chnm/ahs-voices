@@ -22,8 +22,7 @@ The client provided "a first attempt to identify core requirements." Their vocab
 
 The genuinely buildable requests — they require changes to the theme templates. This is the meat of the work.
 
-- [ ] **Homepage: 3 most recent Collections** — today the homepage shows 6 item sets, unsorted; change to the 3 most recent, each with a thumbnail and brief description. ([#34](https://github.com/chnm/ahs-voices/issues/34))
-- [ ] **Homepage: "Featured" section** — promote a hand-picked Item / Collection / Exhibit with a thumbnail and short description. ([#35](https://github.com/chnm/ahs-voices/issues/35))
+- [ ] **Homepage: 3 most recent Collections** — the homepage already has a collections section ("Explore by theme"), but it shows 6 item sets unsorted; change it to the 3 most recent, and add a thumbnail to each card. If the section looks missing, the likely cause is item sets not being assigned to the site (an admin step), not a code bug. ([#34](https://github.com/chnm/ahs-voices/issues/34))
 - [ ] **Story landing pages: thumbnail + description** — surface a thumbnail image and brief description on each Story (item-set) landing page. ([#36](https://github.com/chnm/ahs-voices/issues/36))
 
 ## Build later (needs a content model)
@@ -41,10 +40,15 @@ Not build work. Omeka S already supports these; the gap is an admin step or docu
 - [ ] **Module documentation** — document which modules exist and how they're installed here (zips in `plugins/`, auto-unzipped on startup, activated in Admin > Modules), using the Map module as a worked example. ([#38](https://github.com/chnm/ahs-voices/issues/38))
 - [ ] **Assets vs. Media** — document the difference between Assets (reusable site/theme images) and Media (files attached to items), and investigate whether "Media" can be relabeled in the UI to reduce confusion. ([#40](https://github.com/chnm/ahs-voices/issues/40))
 
+## Not planned
+
+Requested, but deliberately not building.
+
+- **Homepage "Featured" section / Exhibits** — "Featured" items and "Exhibits" were Omeka **Classic** features with no native Omeka S equivalent. Reconstituting them would mean custom scaffolding that's likely to break on future Omeka S upgrades, so we're not doing it. Closed as `wontfix`. ([#35](https://github.com/chnm/ahs-voices/issues/35))
+
 ---
 
 ## Notes on scoping decisions
 
-- **The buildable core is the homepage + landing-page work** (#34, #35, #36, and #37 once modeled). Everything else in the client's list is something Omeka already does — those become admin steps or documentation, not theme development.
-- **Recent Collections (#34)** and **Featured (#35)** are split into separate issues because they're independent homepage features with different editor workflows.
-- **"Exhibit"** (referenced under both Home Page and Featured) is not a native Omeka S concept. It's folded into the Featured issue (#35) and the page-blocks issue (#39, via Block Plus's Exhibit templates) rather than tracked on its own.
+- **The buildable core is the homepage collections + landing-page work** (#34, #36, and #37 once modeled). Everything else in the client's list is something Omeka already does (admin steps or documentation) or something we've decided not to build (#35).
+- **"Featured" and "Exhibits"** don't exist in Omeka S. The client's request reflects Omeka Classic behavior; see #35 for why we're not reconstituting it.
