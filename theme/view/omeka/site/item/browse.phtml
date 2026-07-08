@@ -39,6 +39,32 @@ endif;
 </section>
 <?php endif; ?>
 
+<?php if ($itemSetShow): ?>
+<!-- Collection intro: thumbnail + abstract (hero keeps the description) -->
+<?php
+$abstract = $itemSet->value('dcterms:abstract', ['lang' => $valueLang]);
+$setThumbImg = trim($this->partial('common/item-set-thumb', ['itemSet' => $itemSet, 'type' => 'large', 'alt' => $itemSet->displayTitle(null, $valueLang)]));
+?>
+<?php if ($setThumbImg || $abstract): ?>
+<section class="section collection-intro-section">
+    <div class="container">
+        <div class="collection-intro">
+            <?php if ($setThumbImg): ?>
+            <div class="collection-intro-thumb">
+                <?php echo $setThumbImg; ?>
+            </div>
+            <?php endif; ?>
+            <?php if ($abstract): ?>
+            <div class="collection-intro-body">
+                <p><?php echo $escape($abstract); ?></p>
+            </div>
+            <?php endif; ?>
+        </div>
+    </div>
+</section>
+<?php endif; ?>
+<?php endif; ?>
+
 <section class="section">
     <div class="container">
         <?php echo $this->searchFilters(); ?>

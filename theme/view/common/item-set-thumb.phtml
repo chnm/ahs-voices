@@ -1,0 +1,36 @@
+<?php
+/**
+ * Echo an <img> for an item set's thumbnail, or nothing if none exists.
+ *
+ * Item sets have no media of their own, so:
+ *   1. use a manually-assigned thumbnail asset if present, otherwise
+ *   2. fall back to the first member item that has generated thumbnails.
+ *
+ * Uses the core `thumbnail` view helper (safe on items and assets) rather
+ * than $itemSet->items(), which is not defined on ItemSetRepresentation.
+ *
+ * Expects:
+ *   $itemSet — the ItemSetRepresentation
+ *   $type    — thumbnail size (optional, default 'square')
+ *   $alt     — alt text (optional, defaults to the set title)
+ *
+ * Usage: $img = trim($this->partial('common/item-set-thumb', ['itemSet' => $itemSet]));
+ */
+$type = isset($type) ? $type : 'square';
+$attribs = ['alt' => isset($alt) ? $alt : $itemSet->displayTitle()];
+
+if ($itemSet->thumbnail()) {
+    echo $this->thumbnail($itemSet, $type, $attribs);
+    return;
+}
+
+$members = $this->api()
+    ->search('items', ['item_set_id' => $itemSet->id(), 'limit' => 20])
+    ->getContent();
+foreach ($members as $member) {
+    $primary = $member->primaryMedia();
+    if ($primary && $primary->hasThumbnails()) {
+        echo $this->thumbnail($member, $type, $attribs);
+        return;
+    }
+}

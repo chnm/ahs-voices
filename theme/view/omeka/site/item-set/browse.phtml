@@ -31,9 +31,13 @@ $valueLang = $filterLocale ? [$lang, ''] : null;
         <div class="grid-2">
             <?php foreach ($itemSets as $itemSet):
                 $heading = $itemSet->displayTitle(null, $valueLang);
-                $body = $itemSet->displayDescription(null, $valueLang);
+                $body = (string) ($itemSet->value('dcterms:abstract', ['lang' => $valueLang]) ?: $itemSet->value('dcterms:description', ['lang' => $valueLang]));
+                $setThumbImg = trim($this->partial('common/item-set-thumb', ['itemSet' => $itemSet, 'alt' => $heading]));
             ?>
             <a href="<?php echo $escape($itemSet->siteUrl($site->slug())); ?>" class="card card-item-set">
+                <?php if ($setThumbImg): ?>
+                <div class="card-thumb"><?php echo $setThumbImg; ?></div>
+                <?php endif; ?>
                 <div class="card-body">
                     <?php $date = $itemSet->value('dcterms:date', ['lang' => $valueLang]); ?>
                     <?php if ($date): ?>
