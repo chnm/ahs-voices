@@ -12,8 +12,8 @@ $valueLang = $filterLocale ? [$lang, ''] : null;
 <section class="subpage-hero">
     <div class="container">
         <div class="kicker"><?php echo $translate('The Archive'); ?></div>
-        <h1><?php echo $translate('Collections'); ?></h1>
-        <p><?php echo $translate('Interviews organized by theme, era, and neighborhood — each collection tells a different chapter of Arlington\'s story.'); ?></p>
+        <h1><?php echo $translate('Stories'); ?></h1>
+        <p><?php echo $translate('Interviews organized by theme, era, and neighborhood — each story tells a different chapter of Arlington\'s history.'); ?></p>
     </div>
 </section>
 
@@ -52,7 +52,7 @@ $valueLang = $filterLocale ? [$lang, ''] : null;
             <?php endforeach; ?>
         </div>
         <?php else: ?>
-        <p><?php echo $translate('No collections found.'); ?></p>
+        <p><?php echo $translate('No stories found.'); ?></p>
         <?php endif; ?>
 
         <?php $this->trigger('view.browse.after'); ?>
