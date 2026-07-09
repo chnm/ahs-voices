@@ -21,7 +21,7 @@ endif;
 <!-- Item Set context -->
 <section class="subpage-hero">
     <div class="container">
-        <div class="kicker"><?php echo $translate('Collection'); ?></div>
+        <div class="kicker"><?php echo $translate('Story'); ?></div>
         <h1><?php echo $escape($itemSet->displayTitle(null, $valueLang)); ?></h1>
         <?php $desc = $itemSet->displayDescription(null, $valueLang); ?>
         <?php if ($desc): ?>
@@ -69,9 +69,51 @@ $setThumbImg = trim($this->partial('common/item-set-thumb', ['itemSet' => $itemS
     <div class="container">
         <?php echo $this->searchFilters(); ?>
 
+        <?php
+        // Build list of distinct contributing institutions for filter dropdown
+        $institutions = [];
+        $allItems = $this->api()->search('items', ['site_id' => $site->id(), 'per_page' => 500])->getContent();
+        foreach ($allItems as $si) {
+            $pub = $si->value('dcterms:publisher');
+            if ($pub) {
+                $institutions[(string) $pub] = true;
+            }
+        }
+        ksort($institutions);
+        $institutions = array_keys($institutions);
+        // Detect current filter from Omeka property query params
+        $currentInstitution = '';
+        $propertyQuery = $this->params()->fromQuery('property', []);
+        foreach ($propertyQuery as $pq) {
+            if (isset($pq['property']) && $pq['property'] == '5' && isset($pq['text'])) {
+                $currentInstitution = $pq['text'];
+                break;
+            }
+        }
+        ?>
+
         <div class="browse-controls">
             <?php echo $this->pagination(); ?>
             <div style="display: flex; gap: 8px; align-items: center;">
+                <?php if (count($institutions) > 1): ?>
+                <?php
+                // Build base URL without property filter for "All" option
+                $baseQuery = $this->params()->fromQuery();
+                unset($baseQuery['property']);
+                $browseUrl = $this->url('site/resource', ['controller' => 'item', 'action' => 'browse'], true);
+                $allUrl = $browseUrl . ($baseQuery ? '?' . http_build_query($baseQuery) : '');
+                ?>
+                <select onchange="window.location = this.value;" aria-label="<?php echo $escape($translate('Filter by institution')); ?>">
+                    <option value="<?php echo $escape($allUrl); ?>"><?php echo $translate('All institutions'); ?></option>
+                    <?php foreach ($institutions as $inst):
+                        $filterQuery = $baseQuery;
+                        $filterQuery['property'][0] = ['property' => '5', 'type' => 'eq', 'text' => $inst];
+                        $optUrl = $browseUrl . '?' . http_build_query($filterQuery);
+                    ?>
+                    <option value="<?php echo $escape($optUrl); ?>"<?php if ($currentInstitution === $inst) echo ' selected'; ?>><?php echo $escape($inst); ?></option>
+                    <?php endforeach; ?>
+                </select>
+                <?php endif; ?>
                 <?php echo $this->hyperlink($translate('Advanced search'), $this->url('site/resource', ['controller' => 'item', 'action' => 'search'], ['query' => $query], true), ['class' => 'advanced-search']); ?>
                 <?php echo $this->browse()->renderSortSelector('items'); ?>
             </div>
