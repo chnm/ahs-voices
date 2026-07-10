@@ -1391,8 +1391,8 @@ h3 {
 
 .hero-pick {
     display: block;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.45);
     border-radius: var(--radius);
     padding: 20px;
     text-decoration: none;
@@ -1401,8 +1401,8 @@ h3 {
 }
 
 .hero-pick:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.18);
+    border-color: rgba(255, 255, 255, 0.55);
 }
 
 .hero-pick .kicker {

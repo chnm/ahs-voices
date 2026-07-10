@@ -9,7 +9,7 @@ $description = $itemSet->value('dcterms:description');
 <!-- Subpage Hero -->
 <section class="subpage-hero">
     <div class="container">
-        <div class="kicker"><?php echo $translate('Collection'); ?></div>
+        <div class="kicker"><?php echo $translate('Story'); ?></div>
         <h1><?php echo $escape($title); ?></h1>
         <?php if ($description): ?>
             <p><?php echo $escape($description); ?></p>
@@ -40,7 +40,7 @@ $description = $itemSet->value('dcterms:description');
             </div>
             <?php endforeach; ?>
         <?php else: ?>
-            <p><?php echo $translate('No interviews in this collection yet.'); ?></p>
+            <p><?php echo $translate('No interviews in this story yet.'); ?></p>
         <?php endif; ?>
     </div>
 </section>

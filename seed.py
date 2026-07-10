@@ -20,6 +20,7 @@ if TEMPLATE_ONLY:
     sys.argv.remove("--template-only")
 
 API = "http://localhost:8080/api"
+SITE_ID = 1
 
 # Read from .env file if it exists
 env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env")
@@ -79,14 +80,14 @@ collections = [
 ]
 
 interviews = [
-    {"name": "Dorothy Henderson", "years": "1920\u20132015", "recorded": "June 14, 2008", "length": "1:42:18", "collection": "civilwar", "neighborhood": "South Arlington", "interviewer": "Margaret Chen", "topics": ["Freedman\u2019s Village", "Arlington Cemetery", "Genealogy"], "summary": "A descendant of Freedman\u2019s Village residents traces her family\u2019s story from the Civil War contraband camps to modern-day Arlington."},
-    {"name": "Marco Escobar", "years": "b. 1958", "recorded": "March 3, 2019", "length": "2:11:04", "collection": "columbia_pike", "neighborhood": "Columbia Pike", "interviewer": "Sarah Whitford", "topics": ["Columbia Pike", "Salvadoran-American", "Restaurant"], "summary": "Owner of a pupuseria on Columbia Pike since 1989 describes building a Salvadoran community hub along the corridor."},
-    {"name": "Grace Okonjo", "years": "b. 1954", "recorded": "October 22, 2021", "length": "1:18:47", "collection": "civic", "neighborhood": "Clarendon", "interviewer": "David Park", "topics": ["County Board", "School Board", "Civil Rights"], "summary": "A longtime Arlington County Board member reflects on civic life and the fight for equitable development."},
-    {"name": "Robert Tran", "years": "b. 1965", "recorded": "August 9, 2011", "length": "2:48:33", "collection": "neighborhoods", "neighborhood": "Ballston", "interviewer": "Margaret Chen", "topics": ["Ballston", "Development", "Childhood"], "summary": "Memories of Ballston before the Metro arrived and watching the neighborhood transform from suburban to urban."},
-    {"name": "Fatima Yohannes", "years": "b. 1972", "recorded": "May 2, 2017", "length": "1:55:09", "collection": "immigrant", "neighborhood": "Buckingham", "interviewer": "Lila Hovsepian", "topics": ["Ethiopian community", "Restaurants", "Culture"], "summary": "Arrival from Addis Ababa in 1995 and building the Ethiopian restaurant and cultural scene along Columbia Pike."},
-    {"name": "Thomas Kelley", "years": "1935\u20132019", "recorded": "July 19, 2010", "length": "1:12:55", "collection": "pentagon", "neighborhood": "Pentagon City", "interviewer": "Margaret Chen", "topics": ["Pentagon", "September 11", "Military"], "summary": "A retired Pentagon employee describes working there for thirty years, including the morning of September 11, 2001."},
-    {"name": "Linh Nguyen", "years": "b. 1962", "recorded": "February 11, 2023", "length": "1:34:21", "collection": "immigrant", "neighborhood": "Cherrydale", "interviewer": "David Park", "topics": ["Vietnamese-American", "Restaurants", "School"], "summary": "A second-generation Vietnamese-American restaurateur on family, pho, and growing up in Arlington in the 1970s."},
-    {"name": "James Patterson", "years": "b. 1941", "recorded": "November 4, 2015", "length": "2:02:11", "collection": "neighborhoods", "neighborhood": "Lyon Village", "interviewer": "Sarah Whitford", "topics": ["Metro", "Rosslyn", "Clarendon"], "summary": "A retired Metro planner remembers the Orange Line\u2019s arrival and how it reshaped the Rosslyn-Ballston corridor."},
+    {"name": "Dorothy Henderson", "years": "1920\u20132015", "recorded": "June 14, 2008", "length": "1:42:18", "collection": "civilwar", "neighborhood": "South Arlington", "interviewer": "Margaret Chen", "publisher": "Arlington Historical Society", "topics": ["Freedman\u2019s Village", "Arlington Cemetery", "Genealogy"], "summary": "A descendant of Freedman\u2019s Village residents traces her family\u2019s story from the Civil War contraband camps to modern-day Arlington."},
+    {"name": "Marco Escobar", "years": "b. 1958", "recorded": "March 3, 2019", "length": "2:11:04", "collection": "columbia_pike", "neighborhood": "Columbia Pike", "interviewer": "Sarah Whitford", "publisher": "Arlington Historical Society", "topics": ["Columbia Pike", "Salvadoran-American", "Restaurant"], "summary": "Owner of a pupuseria on Columbia Pike since 1989 describes building a Salvadoran community hub along the corridor."},
+    {"name": "Grace Okonjo", "years": "b. 1954", "recorded": "October 22, 2021", "length": "1:18:47", "collection": "civic", "neighborhood": "Clarendon", "interviewer": "David Park", "publisher": "Arlington Historical Society", "topics": ["County Board", "School Board", "Civil Rights"], "summary": "A longtime Arlington County Board member reflects on civic life and the fight for equitable development."},
+    {"name": "Robert Tran", "years": "b. 1965", "recorded": "August 9, 2011", "length": "2:48:33", "collection": "neighborhoods", "neighborhood": "Ballston", "interviewer": "Margaret Chen", "publisher": "Arlington Historical Society", "topics": ["Ballston", "Development", "Childhood"], "summary": "Memories of Ballston before the Metro arrived and watching the neighborhood transform from suburban to urban."},
+    {"name": "Fatima Yohannes", "years": "b. 1972", "recorded": "May 2, 2017", "length": "1:55:09", "collection": "immigrant", "neighborhood": "Buckingham", "interviewer": "Lila Hovsepian", "publisher": "Arlington Historical Society", "topics": ["Ethiopian community", "Restaurants", "Culture"], "summary": "Arrival from Addis Ababa in 1995 and building the Ethiopian restaurant and cultural scene along Columbia Pike."},
+    {"name": "Thomas Kelley", "years": "1935\u20132019", "recorded": "July 19, 2010", "length": "1:12:55", "collection": "pentagon", "neighborhood": "Pentagon City", "interviewer": "Margaret Chen", "publisher": "Arlington Historical Society", "topics": ["Pentagon", "September 11", "Military"], "summary": "A retired Pentagon employee describes working there for thirty years, including the morning of September 11, 2001."},
+    {"name": "Linh Nguyen", "years": "b. 1962", "recorded": "February 11, 2023", "length": "1:34:21", "collection": "immigrant", "neighborhood": "Cherrydale", "interviewer": "David Park", "publisher": "Arlington County Public Library", "topics": ["Vietnamese-American", "Restaurants", "School"], "summary": "A second-generation Vietnamese-American restaurateur on family, pho, and growing up in Arlington in the 1970s."},
+    {"name": "James Patterson", "years": "b. 1941", "recorded": "November 4, 2015", "length": "2:02:11", "collection": "neighborhoods", "neighborhood": "Lyon Village", "interviewer": "Sarah Whitford", "publisher": "Arlington County Public Library", "topics": ["Metro", "Rosslyn", "Clarendon"], "summary": "A retired Metro planner remembers the Orange Line\u2019s arrival and how it reshaped the Rosslyn-Ballston corridor."},
 ]
 
 
@@ -145,9 +146,17 @@ template_data = {
     "o:label": "Oral History Interview",
     "o:resource_template_property": template_props_data,
 }
-template_resp = api_post("resource_templates", template_data)
-template_id = template_resp["o:id"]
-print(f"  Created resource template: Oral History Interview (ID: {template_id})")
+existing_templates = api_get("resource_templates")
+template_id = None
+for t in existing_templates:
+    if t["o:label"] == "Oral History Interview":
+        template_id = t["o:id"]
+        print(f"  Resource template already exists: Oral History Interview (ID: {template_id})")
+        break
+if template_id is None:
+    template_resp = api_post("resource_templates", template_data)
+    template_id = template_resp["o:id"]
+    print(f"  Created resource template: Oral History Interview (ID: {template_id})")
 
 if TEMPLATE_ONLY:
     print("\nDone! Template created. Use without --template-only to also seed sample data.")
@@ -158,8 +167,14 @@ if TEMPLATE_ONLY:
 
 print("\nCreating item sets...")
 set_ids = {}
+existing_sets = api_get("item_sets?per_page=100")
+existing_set_titles = {s["dcterms:title"][0]["@value"]: s["o:id"] for s in existing_sets if s.get("dcterms:title")}
 
 for c in collections:
+    if c["title"] in existing_set_titles:
+        set_ids[c["key"]] = existing_set_titles[c["title"]]
+        print(f"  Item set already exists: {c['title']} (ID: {set_ids[c['key']]})")
+        continue
     data = {
         "dcterms:title": [{"type": "literal", "property_id": prop_id("dcterms:title"), "@value": c["title"]}],
         "dcterms:description": [{"type": "literal", "property_id": prop_id("dcterms:description"), "@value": c["desc"]}],
@@ -174,8 +189,13 @@ for c in collections:
 # ---------- Create Items ----------
 
 print("\nCreating items...")
+existing_items = api_get("items?per_page=100")
+existing_item_titles = {it["dcterms:title"][0]["@value"] for it in existing_items if it.get("dcterms:title")}
 
 for i in interviews:
+    if i["name"] in existing_item_titles:
+        print(f"  Item already exists: {i['name']}")
+        continue
     subjects = [{"type": "literal", "property_id": prop_id("dcterms:subject"), "@value": t} for t in i["topics"]]
     data = {
         "dcterms:title": [{"type": "literal", "property_id": prop_id("dcterms:title"), "@value": i["name"]}],
@@ -184,9 +204,11 @@ for i in interviews:
         "dcterms:created": [{"type": "literal", "property_id": prop_id("dcterms:created"), "@value": i["recorded"]}],
         "dcterms:subject": subjects,
         "dcterms:contributor": [{"type": "literal", "property_id": prop_id("dcterms:contributor"), "@value": f"Interviewed by {i['interviewer']}"}],
+        "dcterms:publisher": [{"type": "literal", "property_id": prop_id("dcterms:publisher"), "@value": i["publisher"]}],
         "dcterms:extent": [{"type": "literal", "property_id": prop_id("dcterms:extent"), "@value": i["length"]}],
         "o:item_set": [{"o:id": set_ids[i["collection"]]}],
         "o:resource_template": {"o:id": template_id},
+        "o:site": [{"o:id": SITE_ID}],
         "o:is_public": True,
     }
     # Add spatial if the property exists
@@ -209,7 +231,6 @@ for i in interviews:
 
 # ---------- Assign Item Sets to Site ----------
 
-SITE_ID = 1
 print("\nAssigning item sets to site...")
 site_item_sets = [{"o:item_set": {"o:id": sid}} for sid in set_ids.values()]
 api_patch(f"sites/{SITE_ID}", {"o:site_item_set": site_item_sets})

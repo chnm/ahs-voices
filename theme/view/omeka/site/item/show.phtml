@@ -177,7 +177,7 @@ foreach ($item->media() as $m) {
                 if (count($itemSets)):
                 ?>
                 <section>
-                    <h4><?php echo $translate('Collection'); ?></h4>
+                    <h4><?php echo $translate('Story'); ?></h4>
                     <?php foreach ($itemSets as $is): ?>
                     <a href="<?php echo $escape($is->siteUrl($site->slug())); ?>" style="display: block; font-size: 14px; margin-bottom: 4px;"><?php echo $escape($is->displayTitle()); ?></a>
                     <?php endforeach; ?>
