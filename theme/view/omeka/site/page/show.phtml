@@ -41,35 +41,17 @@ $itemSets = $api->search('item_sets', ['site_id' => $site->id(), 'sort_by' => 'c
 <section class="hero">
     <div class="container">
         <div class="hero-text">
-            <?php $summary = $site->summary(); ?>
-            <?php if ($summary): ?>
-            <p class="body-large"><?php echo $escape($summary); ?></p>
-            <?php endif; ?>
             <h1><?php echo $escape($this->themeSetting('hero_headline') ?: 'The voices of a town, recorded'); ?></h1>
+            <?php $summary = $site->summary(); ?>
+            <p class="body-large"><?php if ($summary): echo $escape($summary) . ' '; endif; ?><?php echo $translate('A project of the'); ?> <a href="https://arlhist.org"><?php echo $translate('Arlington Historical Society'); ?></a>.</p>
         </div>
-        <?php
-        // Pick 3 random items for hero entry points
-        $allItems = $api->search('items', ['site_id' => $site->id(), 'limit' => 50])->getContent();
-        if (count($allItems) > 3) {
-            $keys = array_rand($allItems, 3);
-            $heroPicks = array_map(function($k) use ($allItems) { return $allItems[$k]; }, $keys);
-        } else {
-            $heroPicks = $allItems;
-        }
-        ?>
-        <?php if (!empty($heroPicks)): ?>
+        <?php if (count($itemSets)): ?>
         <div class="hero-picks">
-            <?php foreach ($heroPicks as $pick): ?>
-            <a href="<?php echo $escape($pick->siteUrl($site->slug())); ?>" class="hero-pick">
-                <?php
-                $sets = $pick->itemSets();
-                if (count($sets)):
-                    $firstSet = current($sets);
-                ?>
-                <div class="kicker"><?php echo $escape($firstSet->displayTitle()); ?></div>
-                <?php endif; ?>
-                <h3><?php echo $escape($pick->displayTitle()); ?></h3>
-                <span class="listen-link"><?php echo $translate('Listen'); ?> →</span>
+            <?php foreach ($itemSets as $set): ?>
+            <a href="<?php echo $escape($set->siteUrl($site->slug())); ?>" class="hero-pick">
+                <div class="kicker"><?php echo $translate('Story'); ?></div>
+                <h3><?php echo $escape($set->displayTitle()); ?></h3>
+                <span class="listen-link"><?php echo $translate('Browse'); ?> →</span>
             </a>
             <?php endforeach; ?>
         </div>
@@ -138,7 +120,7 @@ $itemSets = $api->search('item_sets', ['site_id' => $site->id(), 'sort_by' => 'c
     <div class="container">
         <div class="section-header">
             <div class="kicker"><?php echo $translate('Stories'); ?></div>
-            <h2><?php echo $translate('Explore by theme'); ?></h2>
+            <h2><?php echo $translate('Explore by Stories'); ?></h2>
         </div>
         <div class="grid-3">
             <?php foreach ($itemSets as $itemSet): ?>

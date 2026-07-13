@@ -1378,6 +1378,16 @@ h3 {
     margin-bottom: 16px;
 }
 
+.hero-text .body-large a {
+    color: var(--paper-alt-ink);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.hero-text .body-large a:hover {
+    text-decoration: none;
+}
+
 .hero h1 {
     color: var(--paper-alt-ink);
     font-size: 38px;
