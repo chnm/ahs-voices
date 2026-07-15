@@ -16,6 +16,42 @@ $this->headScript()->prependFile($this->assetUrl('vendor/jquery/jquery.min.js', 
 $this->jsTranslate();
 $this->trigger('view.layout');
 $userBar = $this->userBar();
+$footerColumns = [
+    [
+        'heading' => $this->themeSetting('footer_column1_heading', $translate('Explore')),
+        'links' => [
+            [
+                'text' => $this->themeSetting('footer_column1_link1_text', $translate('Home')),
+                'url' => $this->themeSetting('footer_column1_link1_url', $site->url()),
+            ],
+            [
+                'text' => $this->themeSetting('footer_column1_link2_text', $translate('Browse Interviews')),
+                'url' => $this->themeSetting('footer_column1_link2_url', $this->url('site/resource', ['controller' => 'item', 'action' => 'browse'], true)),
+            ],
+            [
+                'text' => $this->themeSetting('footer_column1_link3_text', $translate('Stories')),
+                'url' => $this->themeSetting('footer_column1_link3_url', $this->url('site/resource', ['controller' => 'item-set', 'action' => 'browse'], true)),
+            ],
+        ],
+    ],
+    [
+        'heading' => $this->themeSetting('footer_column2_heading', $translate('The Society')),
+        'links' => [
+            [
+                'text' => $this->themeSetting('footer_column2_link1_text', $translate('About AHS')),
+                'url' => $this->themeSetting('footer_column2_link1_url', 'https://arlhist.org'),
+            ],
+            [
+                'text' => $this->themeSetting('footer_column2_link2_text', $translate('Visit Us')),
+                'url' => $this->themeSetting('footer_column2_link2_url', 'https://arlhist.org/visit/'),
+            ],
+            [
+                'text' => $this->themeSetting('footer_column2_link3_text', $translate('Donate')),
+                'url' => $this->themeSetting('footer_column2_link3_url', 'https://arlhist.org/support/donate/'),
+            ],
+        ],
+    ],
+];
 ?>
 <?php echo $this->doctype(); ?>
 <?php echo $this->htmlElement('html'); ?>
@@ -104,18 +140,18 @@ $userBar = $this->userBar();
                         </p>
                     </div>
                     <div class="footer-col"></div>
+                    <?php foreach ($footerColumns as $column): ?>
                     <div class="footer-col">
-                        <h4><?php echo $translate('Explore'); ?></h4>
-                        <a href="<?php echo $site->url(); ?>"><?php echo $translate('Home'); ?></a>
-                        <a href="<?php echo $this->url('site/resource', ['controller' => 'item', 'action' => 'browse'], true); ?>"><?php echo $translate('Browse Interviews'); ?></a>
-                        <a href="<?php echo $this->url('site/resource', ['controller' => 'item-set', 'action' => 'browse'], true); ?>"><?php echo $translate('Stories'); ?></a>
+                        <?php if ($column['heading']): ?>
+                        <h4><?php echo $escape($column['heading']); ?></h4>
+                        <?php endif; ?>
+                        <?php foreach ($column['links'] as $link): ?>
+                            <?php if ($link['text'] && $link['url']): ?>
+                        <a href="<?php echo $escape($link['url']); ?>"><?php echo $escape($link['text']); ?></a>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
                     </div>
-                    <div class="footer-col">
-                        <h4><?php echo $translate('The Society'); ?></h4>
-                        <a href="https://arlhist.org"><?php echo $translate('About AHS'); ?></a>
-                        <a href="https://arlhist.org/visit/"><?php echo $translate('Visit Us'); ?></a>
-                        <a href="https://arlhist.org/support/donate/"><?php echo $translate('Donate'); ?></a>
-                    </div>
+                    <?php endforeach; ?>
                 </div>
                 <div class="footer-bottom">
                     <?php echo sprintf($translate('&copy; %s %s.'), date('Y'), $escape($siteTitle)); ?>
