@@ -37,7 +37,7 @@ This is an **Omeka S theme** (Laminas `.phtml` templates + CSS + vanilla JS). No
 - **Citation generator**: Chicago/MLA/APA with copy to clipboard
 - **Child page navigation**: auto-detected from nav tree, rendered as styled cards
 - **Custom vocabulary**: `oralhistory:transcript`, `oralhistory:transcriber`, etc.
-- **Theme settings**: hero headline, site subtitle, logo, footer description — all editable in admin
+- **Theme settings**: hero headline, site subtitle, logo, footer description, and footer link columns — all editable in admin
 
 ## Design
 
