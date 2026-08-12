@@ -18,6 +18,14 @@ python3 seed.py               # creates resource template + sample data
 
 See [DEVNOTES.md](DEVNOTES.md) for full setup instructions, vocabulary import, transcript format, and environment reset procedures.
 
+## Documentation for Archive Staff
+
+- [Adding an Oral History](docs/adding-oral-histories.md) — the complete item, media, transcript, collection, and publishing workflow
+- [Managing Collections (Item Sets)](docs/managing-collections.md) — create thematic collections and make them available on the site
+- [Building and Editing Site Pages](docs/building-pages.md) — create formatted pages with text, images, media, maps, and native layouts
+- [Managing Omeka S Modules](docs/managing-modules.md) — bundled modules, activation, adding release ZIPs, and the Mapping example
+- [Omeka S User Manual](https://omeka.org/s/docs/user-manual/) — general reference for the administrative interface
+
 ## Architecture
 
 This is an **Omeka S theme** (Laminas `.phtml` templates + CSS + vanilla JS). No build step, no bundler, no Node.js dependency.

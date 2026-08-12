@@ -36,8 +36,8 @@ Wanted, but blocked on a design decision before any build.
 Not build work. Omeka S already supports these; the gap is an admin step or documentation for the client.
 
 - [ ] **"Stories" navigation link → Item Sets** — an admin step (Admin > Sites > Navigation), not a code change. Add a nav link labeled "Stories" pointing to the item-set browse page. ([#33](https://github.com/chnm/ahs-voices/issues/33))
-- [ ] **Basic pages (the client's "most critical module")** — Omeka S site pages are already built from native blocks (HTML/WYSIWYG, Media, Asset). Primarily an **instruction** task. Smaller open questions: whether [Block Plus](https://omeka.org/s/modules/BlockPlus/) is worth installing for column layouts + Exhibit templates, and how to handle image resizing (native support is limited). ([#39](https://github.com/chnm/ahs-voices/issues/39))
-- [ ] **Module documentation** — document which modules exist and how they're installed here (zips in `plugins/`, auto-unzipped on startup, activated in Admin > Modules), using the Map module as a worked example. ([#38](https://github.com/chnm/ahs-voices/issues/38))
+- [x] **Basic pages (the client's "most critical module")** — documented the native page-block workflow, theme-managed image sizing, and the recommendation to reserve Block Plus for defined advanced patterns in [Building and Editing Site Pages](building-pages.md). ([#39](https://github.com/chnm/ahs-voices/issues/39))
+- [x] **Module documentation** — documented the repository/Docker/admin installation workflow, bundled modules, upgrades, and Mapping as a worked example in [Managing Omeka S Modules](managing-modules.md). ([#38](https://github.com/chnm/ahs-voices/issues/38))
 - [ ] **Assets vs. Media** — document the difference between Assets (reusable site/theme images) and Media (files attached to items), and investigate whether "Media" can be relabeled in the UI to reduce confusion. ([#40](https://github.com/chnm/ahs-voices/issues/40))
 
 ## Not planned
