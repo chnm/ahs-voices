@@ -134,31 +134,6 @@ The Arlington Stories homepage is partly controlled by the theme. Page blocks en
 
 Use homepage blocks for introductory or supporting editorial content. Do not try to recreate the theme-generated sections with duplicate blocks. Site-wide hero text and other configurable labels are managed under **Site → Theme → Theme settings** and in the site's Summary field.
 
-## Do we need Block Plus?
-
-**Recommendation: no, not for ordinary pages.** Omeka S 4.2 already includes formatted HTML, Asset and Media blocks, block groups, Normal flow, and Grid layouts. Those native tools satisfy the requirement for basic pages with text, media, formatting, and image placement.
-
-[Block Plus](https://omeka.org/s/modules/BlockPlus/) version 3.4.45 and its required **Common** dependency are already bundled in this repository, so they can be activated later without adding another ZIP. Block Plus becomes useful when the archive has a specific need for:
-
-- reusable page models or preconfigured groups of blocks;
-- the supplied **Simple page**, **Exhibit**, or **Exhibit page** models;
-- a repeatable “Resource with text” group;
-- advanced blocks such as mirror pages, galleries, showcases, graphs, or enhanced search forms; or
-- a consistent multi-page exhibit workflow that has been tested with the theme.
-
-It also introduces more interface choices, dependencies, and theme-testing work. Several of its older features now overlap with capabilities added to Omeka core in version 4.1 and later. Leave it inactive unless a defined page pattern needs it.
-
-### Safely evaluate Block Plus
-
-1. Work in the local or staging environment.
-2. Under **Admin → Modules**, install or activate **Common** first, then **Block Plus**.
-3. Create a private test page rather than converting a published page.
-4. Try the native tools and the relevant Block Plus page model side by side.
-5. Test the public result on desktop and mobile.
-6. Adopt the module only if the model saves meaningful editorial work and produces a stable result in this theme.
-
-See [Managing Omeka S Modules](managing-modules.md) for activation and deployment details.
-
 ## Troubleshooting
 
 ### The page exists but visitors cannot find it
@@ -172,10 +147,6 @@ In Normal flow, move the Asset or Media block before the related HTML block. Sav
 ### The image is the wrong size
 
 First verify that the public page is using this theme and that the image is in an Asset or Media block. Try the intended thumbnail size for Media embed. For exceptional layouts, test Grid mode or request a reusable theme style; avoid hard-coded inline dimensions.
-
-### A block is unavailable
-
-Native blocks should always be present. Map blocks require Mapping to be active; Block Plus blocks require Common and Block Plus to be installed and active. Check **Admin → Modules** or ask a Global Administrator.
 
 ### The homepage does not match the block order
 
