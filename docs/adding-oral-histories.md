@@ -32,8 +32,8 @@ If you don't have a login yet, ask the site administrator to create one for you.
 ## Step 2: Start a new interview
 
 1. In the left-hand menu, click **Items**.
-2. Click the green **Add new item** button (top right).
-3. Before filling anything in, look for the **Resource template** dropdown near the top and choose **"Oral History Interview."**
+2. Click the **Add new item** button (top right).
+3. Before filling anything in, look for the **Resource template** dropdown near the top and choose **"AHS Oral History Interview."**
 
 This last step is important. Choosing the template sets up all the right fields (Interviewee Name, Summary, Transcript, and so on) in the correct order. If the form looks bare or the field names don't match this guide, double-check that the template is selected.
 
@@ -139,8 +139,6 @@ Always take a look at the finished page on the public site:
 If something looks off, go back into admin, open the item, fix it, and save again. Changes appear right away when you refresh the public page.
 
 The finished interview page combines the portrait, summary, collection, descriptive fields, topic tags, and an automatically generated citation:
-
-![A finished Arlington Stories interview page showing the portrait and summary with descriptive metadata, topics, and citation tools in the sidebar](images/oral-histories/finished-interview-page.jpg)
 
 ## Putting an interview on the Map
 
