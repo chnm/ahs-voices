@@ -18,6 +18,8 @@ mkdir -p pdf
 GUIDES=(
   adding-oral-histories.md
   managing-collections.md
+  building-pages.md
+  managing-modules.md
 )
 
 # Shared pandoc options live in pandoc/pdf.yaml (fonts, colours, layout).

@@ -8,7 +8,3 @@ node_modules/
 prototype/
 _oralhistories/
 .claude/
-
-# Generated PDF guides (rebuild with docs/build-pdfs.sh).
-# Commit the finalized PDFs once the guide set + screenshots are complete.
-docs/pdf/
